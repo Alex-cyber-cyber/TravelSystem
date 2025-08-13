@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 const User = require('../../models/register/register');
 
@@ -56,21 +54,3 @@ exports.createRegister = async (req, res) => {
         });
     }
 };
-=======
-=======
->>>>>>> 369cdefb49904fb7fdf93dcc32d5e577ae4827e4
-const loginController = require('./register');
-
-exports.createRegister = async (req, res) => {
-  try {
-    const newUser = await loginController.createRegister(req.body);
-    res.status(201).json(newUser);
-    } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-<<<<<<< HEAD
->>>>>>> f7f74a2a3d4fbb2599a0ccd5e91ef0d2ba8e53a2
-=======
->>>>>>> 369cdefb49904fb7fdf93dcc32d5e577ae4827e4
