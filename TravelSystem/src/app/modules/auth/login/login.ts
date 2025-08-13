@@ -29,7 +29,7 @@ export class Login {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {  // Cambiado a valid
+    if (this.loginForm.valid) { 
       this.isLoading = true;
       this.errorMessage = '';
 
@@ -47,7 +47,6 @@ export class Login {
         }
       });
     } else {
-      // Marcar todos los campos como touched para mostrar errores
       Object.values(this.loginForm.controls).forEach(control => {
         control.markAsTouched();
       });

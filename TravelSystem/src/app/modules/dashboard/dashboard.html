@@ -1,1 +1,132 @@
-<p>dashboard works!</p>
+<div class="dashboard-container" [class.dark-theme]="darkMode">
+<header class="dashboard-header">
+  <div class="container-fluid h-100">
+    <div class="d-flex align-items-center justify-content-between h-100">
+      <div class="d-flex align-items-center flex-grow-1 flex-md-grow-0">
+        <button class="menu-toggle me-3" (click)="toggleMenu()">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        
+        <div class="logo-container d-flex align-items-center">
+          <i class="bi bi-geo-alt-fill logo-icon"></i>
+          <h1 class="logo-text ms-2 mb-0 d-none d-sm-block">TripSystem</h1>
+        </div>
+      </div>
+
+      <div class="search-container mx-2 mx-md-4 flex-grow-1" style="max-width: 600px;">
+        <div class="search-input-wrapper">
+          <i class="bi bi-search search-icon"></i>
+          <input type="text" class="search-input form-control" placeholder="Buscar...">
+          <div class="search-border"></div>
+        </div>
+      </div>
+
+      <div class="user-actions d-flex align-items-center justify-content-end flex-grow-1 flex-md-grow-0">
+        <div class="notification-bell position-relative me-3">
+          <i class="bi bi-bell fs-5"></i>
+          <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">3</span>
+        </div>
+        
+        <div class="user-profile dropdown" (click)="toggleUserMenu()">
+          <div class="d-flex align-items-center cursor-pointer">
+            <div class="avatar me-2">{{ userInitials }}</div>
+            <span class="user-name me-2 d-none d-md-inline">{{ userName }}</span>
+            <i class="bi bi-chevron-down arrow"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <aside class="dashboard-sidebar" [class.active]="menuActive">
+    <nav class="sidebar-nav h-100 d-flex flex-column">
+      <div class="nav-section mb-4">
+        <h3 class="section-title">NAVEGACIÓN</h3>
+        <ul class="nav-list list-unstyled">
+          <li class="nav-item" [class.active]="activeItem === 'dashboard'">
+            <a href="#" class="d-flex align-items-center" (click)="setActive('dashboard')">
+              <i class="bi bi-speedometer2 me-3"></i>
+              <span class="menu-text">Dashboard</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-section flex-grow-1">
+        <h3 class="section-title">ADMINISTRACIÓN</h3>
+        <ul class="nav-list list-unstyled">
+          <li class="nav-item has-submenu" [class.open]="sucursalesMenuOpen">
+            <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('sucursales')">
+              <i class="bi bi-building me-3"></i>
+              <span class="menu-text flex-grow-1">Sucursales</span>
+              <i class="bi bi-chevron-down submenu-arrow"></i>
+            </div>
+            <ul class="submenu list-unstyled">
+              <li [class.active]="activeItem === 'asignar-sucursales'">
+                <a href="#" class="d-block" (click)="setActive('asignar-sucursales')">
+                  <span>Asignar Sucursales</span>
+                </a>
+              </li>
+              <li [class.active]="activeItem === 'gestionar-asignaciones'">
+                <a href="#" class="d-block" (click)="setActive('gestionar-asignaciones')">
+                  <span>Gestionar Asignaciones</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-submenu" [class.open]="viajesMenuOpen">
+            <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('viajes')">
+              <i class="bi bi-truck me-3"></i>
+              <span class="menu-text flex-grow-1">Viajes</span>
+              <i class="bi bi-chevron-down submenu-arrow"></i>
+            </div>
+            <ul class="submenu list-unstyled">
+              <li [class.active]="activeItem === 'registrar-viaje'">
+                <a href="#" class="d-block" (click)="setActive('registrar-viaje')">
+                  <span>Registrar Viaje</span>
+                </a>
+              </li>
+              <li [class.active]="activeItem === 'historial-viajes'">
+                <a href="#" class="d-block" (click)="setActive('historial-viajes')">
+                  <span>Historial</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item" [class.active]="activeItem === 'reportes'">
+            <a href="#" class="d-flex align-items-center" (click)="setActive('reportes')">
+              <i class="bi bi-file-earmark-bar-graph me-3"></i>
+              <span class="menu-text">Reportes</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer mt-auto">
+        <a href="#" class="help-center d-flex align-items-center">
+          <i class="bi bi-question-circle me-2"></i>
+          <span>Centro de Ayuda</span>
+        </a>
+        <div class="theme-switch d-flex align-items-center">
+          <i class="bi bi-moon me-2"></i>
+          <label class="switch">
+            <input type="checkbox" (change)="toggleTheme()">
+            <span class="slider"></span>
+          </label>
+          <i class="bi bi-sun ms-2"></i>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="dashboard-main" [class.menu-active]="menuActive">
+    <div class="container-fluid py-4">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
