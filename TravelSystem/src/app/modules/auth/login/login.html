@@ -1,0 +1,54 @@
+<div class="login-container d-flex align-items-center justify-content-center">
+  <div class="login-card card shadow-lg p-4">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-primary">Bienvenido</h2>
+      <p class="text-muted">Inicia sesión para continuar</p>
+    </div>
+
+    <!-- Muestra errores -->
+    <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Cambia a formulario reactivo -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="email" class="form-label fw-semibold">Correo electrónico</label>
+        <input type="email" id="email" formControlName="email"
+               class="form-control form-control-lg"
+               [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+               placeholder="ejemplo@correo.com">
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" 
+             class="invalid-feedback">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">Email es requerido</span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">Email no válido</span>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label fw-semibold">Contraseña</label>
+        <input type="password" id="password" formControlName="password"
+               class="form-control form-control-lg"
+               [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+               placeholder="••••••••">
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" 
+             class="invalid-feedback">
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">Contraseña requerida</span>
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Mínimo 8 caracteres</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 btn-lg" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Iniciar sesión</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <span class="text-muted">¿No tienes cuenta?</span>
+      <a routerLink="/register" class="fw-semibold text-decoration-none ms-1 link-register">
+        Regístrate
+      </a>
+    </div>
+  </div>
+</div>

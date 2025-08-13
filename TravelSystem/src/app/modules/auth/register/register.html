@@ -1,0 +1,236 @@
+<div class="register-container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+    <div class="form-header">
+      <h2 class="form-title">Crear Cuenta</h2>
+      <div class="form-progress">
+        <div class="progress-step active" [class.completed]="step > 1">1</div>
+        <div class="progress-line" [class.active]="step > 1"></div>
+        <div class="progress-step" [class.active]="step > 1">2</div>
+      </div>
+    </div>
+
+    <div class="form-body" *ngIf="step === 1">
+      <div class="form-group floating-label">
+        <input
+          id="employeeId"
+          type="text"
+          formControlName="employeeId"
+          class="form-control"
+          placeholder=" "
+          (input)="onFieldInput('employeeId')"
+          [class.is-invalid]="showFieldError('employeeId')"
+          maxlength="13"
+          required>
+        <label for="employeeId">ID de Empleado</label>
+        <div class="invalid-feedback" *ngIf="showFieldError('employeeId')">
+          {{ getErrorMessage('employeeId') }}
+        </div>
+        <div class="form-hint">Ej: 0502342345678 (13 dígitos)</div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="form-group floating-label">
+            <input
+              id="nombres"
+              type="text"
+              formControlName="nombres"
+              class="form-control"
+              placeholder=" "
+              (input)="onFieldInput('nombres')"
+              [class.is-invalid]="showFieldError('nombres')"
+              required>
+            <label for="nombres">Nombres</label>
+            <div class="invalid-feedback" *ngIf="showFieldError('nombres')">
+              {{ getErrorMessage('nombres') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group floating-label">
+            <input
+              id="apellidos"
+              type="text"
+              formControlName="apellidos"
+              class="form-control"
+              placeholder=" "
+              (input)="onFieldInput('apellidos')"
+              [class.is-invalid]="showFieldError('apellidos')"
+              required>
+            <label for="apellidos">Apellidos</label>
+            <div class="invalid-feedback" *ngIf="showFieldError('apellidos')">
+              {{ getErrorMessage('apellidos') }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group floating-label">
+        <input
+          id="correo"
+          type="email"
+          formControlName="correo"
+          class="form-control"
+          placeholder=" "
+          (input)="onFieldInput('correo')"
+          [class.is-invalid]="showFieldError('correo')"
+          required>
+        <label for="correo">Correo Electrónico</label>
+        <div class="invalid-feedback" *ngIf="showFieldError('correo')">
+          {{ getErrorMessage('correo') }}
+        </div>
+        <div class="form-hint">ejemplo@correo.com</div>
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="btn btn-next" (click)="nextStep()">
+          Siguiente
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-body" *ngIf="step === 2">
+      <div class="form-group floating-label">
+        <input
+          id="telefono"
+          type="tel"
+          formControlName="telefono"
+          class="form-control"
+          placeholder=" "
+          (input)="onFieldInput('telefono')"
+          [class.is-invalid]="showFieldError('telefono')"
+          required>
+        <label for="telefono">Teléfono</label>
+        <div class="invalid-feedback" *ngIf="showFieldError('telefono')">
+          {{ getErrorMessage('telefono') }}
+        </div>
+        <div class="form-hint">Ej: +504 9999-9999</div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="form-group floating-label">
+            <select
+              id="departamento"
+              formControlName="departamento"
+              class="form-control"
+              (input)="onFieldInput('departamento')"
+              [class.is-invalid]="showFieldError('departamento')"
+              required>
+              <option value="" disabled selected></option>
+              <option value="contabilidad">Contabilidad</option>
+              <option value="facturacion">Facturación</option>
+              <option value="tecnologia">Tecnología</option>
+              <option value="recursos_humanos">Recursos Humanos</option>
+              <option value="ventas">Ventas</option>
+              <option value="marketing">Marketing</option>
+            </select>
+            <label for="departamento">Departamento</label>
+            <div class="invalid-feedback" *ngIf="showFieldError('departamento')">
+              {{ getErrorMessage('departamento') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group floating-label">
+            <select
+              id="role"
+              formControlName="role"
+              class="form-control"
+              (change)="onRoleChange()"
+              (input)="onFieldInput('role')"
+              [class.is-invalid]="showFieldError('role')"
+              required>
+              <option value="" disabled selected></option>
+              <option value="admin">Administrador</option>
+              <option value="user">Usuario</option>
+            </select>
+            <label for="role">Rol</label>
+            <div class="invalid-feedback" *ngIf="showFieldError('role')">
+              {{ getErrorMessage('role') }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group floating-label password-field">
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          placeholder=" "
+          (input)="onFieldInput('password')"
+          [class.is-invalid]="showFieldError('password')"
+          required>
+        <label for="password">Contraseña</label>
+        <button type="button" class="password-toggle" (click)="togglePassword('password')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+          </svg>
+        </button>
+        <div class="invalid-feedback" *ngIf="showFieldError('password')">
+          {{ getErrorMessage('password') }}
+        </div>
+        <div class="password-strength" [ngClass]="getPasswordStrengthClass()"></div>
+      </div>
+
+      <div class="form-group floating-label password-field">
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          class="form-control"
+          placeholder=" "
+          (input)="onFieldInput('confirmPassword')"
+          [class.is-invalid]="showFieldError('confirmPassword')"
+          required>
+        <label for="confirmPassword">Confirmar Contraseña</label>
+        <button type="button" class="password-toggle" (click)="togglePassword('confirmPassword')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+          </svg>
+        </button>
+        <div class="invalid-feedback" *ngIf="showFieldError('confirmPassword')">
+          {{ getErrorMessage('confirmPassword') }}
+        </div>
+      </div>
+
+          <div class="password-match-feedback" 
+        *ngIf="registerForm.get('password')?.value && registerForm.get('confirmPassword')?.value"
+        [class.invalid]="registerForm.hasError('mismatch')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path *ngIf="!registerForm.hasError('mismatch')" d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+        <path *ngIf="registerForm.hasError('mismatch')" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </svg>
+      <span>{{ registerForm.hasError('mismatch') ? 'Las contraseñas no coinciden' : 'Las contraseñas coinciden' }}</span>
+    </div>
+      <div class="form-footer">
+        <button type="button" class="btn btn-prev" (click)="prevStep()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+          </svg>
+          Anterior
+        </button>
+        <button
+          type="submit"
+          class="btn btn-submit"
+          [disabled]="registerForm.invalid">
+          Registrarse
+        </button>
+      </div>
+    </div>
+
+    <div class="form-login-link">
+      <span>¿Ya tienes cuenta?</span>
+      <a routerLink="/login" class="login-link">Inicia sesión</a>
+    </div>
+  </form>
+</div>

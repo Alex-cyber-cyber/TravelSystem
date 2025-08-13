@@ -1,0 +1,256 @@
+
+@use '../../../../styles/variables.scss' as vars;
+@use '../../../../styles/mixins.scss' as mix;
+
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: vars.$gradient-dark;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  font-family: vars.$font-family-sans-serif;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(vars.$white, 0.05) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+    z-index: 0;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+}
+
+.login-card {
+  background: vars.$white;
+  border-radius: vars.$border-radius-lg;
+  padding: 3rem;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 1;
+  @include mix.elevation(3);
+  transform: translateY(0);
+  transition: vars.$transition-base;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: vars.$gradient-primary;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    @include mix.elevation(4);
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+
+  .logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: vars.$gradient-primary;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include mix.elevation(2);
+    @include mix.pulse-animation;
+
+    svg {
+      width: 40px;
+      height: 40px;
+      fill: vars.$white;
+    }
+  }
+
+  h2 {
+    color: vars.$primary-dark;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+  }
+
+  p {
+    color: vars.$text-muted;
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+}
+
+.login-form {
+  .form-group {
+    margin-bottom: 1.75rem;
+    position: relative;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: vars.$dark;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      border: 2px solid vars.$gray-300;
+      border-radius: vars.$border-radius;
+      font-size: 1rem;
+      color: vars.$text-color;
+      transition: vars.$transition-base;
+      background-color: vars.$white;
+
+      &:focus {
+        border-color: vars.$primary;
+        @include mix.focus-effect;
+        outline: none;
+      }
+
+      &::placeholder {
+        color: vars.$gray-500;
+      }
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: vars.$gray-500;
+      cursor: pointer;
+      transition: vars.$transition-base;
+
+      &:hover {
+        color: vars.$primary;
+      }
+    }
+  }
+}
+
+.btn-login {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: vars.$border-radius;
+  margin-top: 1rem;
+  @include mix.gradient-button;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(vars.$white, 0.1);
+    z-index: -1;
+    transition: vars.$transition-base;
+    opacity: 0;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: vars.$text-muted;
+  font-size: 0.9rem;
+
+  a {
+    color: vars.$primary;
+    font-weight: 600;
+    text-decoration: none;
+    transition: vars.$transition-base;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: vars.$primary;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      color: vars.$primary-dark;
+
+      &::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    }
+  }
+}
+
+// Efectos especiales
+.input-focus-effect {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: vars.$gradient-primary;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:focus-within::after {
+    transform: scaleX(1);
+  }
+}
+
+// Responsive
+@media (max-width: 576px) {
+  .login-container {
+    padding: 1.5rem;
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.75rem;
+  }
+}
