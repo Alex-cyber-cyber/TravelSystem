@@ -5,12 +5,12 @@
       <p class="text-muted">Inicia sesión para continuar</p>
     </div>
 
-    <!-- Muestra errores -->
+
     <div *ngIf="errorMessage" class="alert alert-danger mb-3">
       {{ errorMessage }}
     </div>
 
-    <!-- Cambia a formulario reactivo -->
+    
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="mb-3">
         <label for="email" class="form-label fw-semibold">Correo electrónico</label>

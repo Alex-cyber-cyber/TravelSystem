@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { SucursalesForm } from '../sucursales/components/sucursales-form/sucursales-form';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm],
   standalone: true,
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
@@ -27,16 +29,22 @@ export class Dashboard implements OnInit, OnDestroy {
   userEmail = '';
   userRole = '';
   userAvatarColor = '#4361ee'; 
+  personalMenuOpen = true;
   
 
   unreadNotifications = 3;
+
+
+
   
   private userSub!: Subscription;
+  
 
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -111,16 +119,20 @@ export class Dashboard implements OnInit, OnDestroy {
   toggleUserMenu(): void {
     this.showUserMenu = !this.showUserMenu;
   }
+  
 
   closeUserMenu(): void {
     this.showUserMenu = false;
   }
+  
 
   toggleSubmenu(menu: string): void {
     if (menu === 'sucursales') {
       this.sucursalesMenuOpen = !this.sucursalesMenuOpen;
     } else if (menu === 'viajes') {
       this.viajesMenuOpen = !this.viajesMenuOpen;
+    } else if (menu === 'personal') {
+      this.personalMenuOpen = !this.personalMenuOpen; 
     }
   }
 
@@ -142,10 +154,6 @@ export class Dashboard implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  markNotificationsAsRead(): void {
-    this.unreadNotifications = 0;
-  }
-
   get userDisplayRole(): string {
     return this.userRole === 'admin' ? 'Administrador' : 
            this.userRole === 'user' ? 'Usuario' : this.userRole;
@@ -157,4 +165,28 @@ export class Dashboard implements OnInit, OnDestroy {
       'color': 'white'
     };
   }
+  handleRegistrarSucursal(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setActive('registrar-sucursal');
+    this.openSucursalForm();
+  }
+
+  openSucursalForm(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const dialogRef = this.dialog.open(SucursalesForm, {
+      width: '800px',
+      disableClose: true,
+      panelClass: this.darkMode ? 'dark-theme' : ''
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('El diálogo fue cerrado');
+    });
+  }
 }
+

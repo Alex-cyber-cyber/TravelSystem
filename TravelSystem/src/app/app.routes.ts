@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { Register } from './modules/auth/register/register';
 import { Dashboard } from './modules/dashboard/dashboard';
+import { authGuard } from './core/guards/auth.guard';
+import { SucursalesForm } from './modules/sucursales/components/sucursales-form/sucursales-form';
 
 export const routes: Routes = [{
     path: 'login',
@@ -12,5 +14,7 @@ export const routes: Routes = [{
   },
 {path: '', redirectTo: 'login', pathMatch: 'full'},
 { path: 'register', component: Register },
-{path: 'dashboard', component: Dashboard},
+{path: 'dashboard', component: Dashboard, canActivate: [authGuard], 
+  children: [
+  {path: 'sucursales', component: SucursalesForm}]},
 {path: '**', redirectTo: 'login'}];

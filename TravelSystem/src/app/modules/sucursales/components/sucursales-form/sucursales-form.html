@@ -1,0 +1,122 @@
+<div class="sucursal-form-container" [class.dark-theme]="darkMode">
+  <div class="card border-0 shadow">
+    <div class="card-header">
+      <h5 class="mb-0">Registrar Nueva Sucursal</h5>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="branchForm" (ngSubmit)="onSubmit()" class="pt-3">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="nombre" formControlName="name" 
+                     placeholder="Nombre" [class.is-invalid]="branchForm.get('name')?.invalid && branchForm.get('name')?.touched">
+              <label for="nombre">Nombre*</label>
+              <div class="invalid-feedback" *ngIf="branchForm.get('name')?.hasError('required')">
+                Este campo es requerido
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="codigo" formControlName="code" 
+                     placeholder="Código" maxlength="10"
+                     [class.is-invalid]="branchForm.get('code')?.invalid && branchForm.get('code')?.touched">
+              <label for="codigo">Código*</label>
+              <div class="invalid-feedback" *ngIf="branchForm.get('code')?.hasError('required')">
+                Este campo es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="branchForm.get('code')?.hasError('maxlength')">
+                Máximo 10 caracteres
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="direccion" formControlName="address" 
+                     placeholder="Dirección"
+                     [class.is-invalid]="branchForm.get('address')?.invalid && branchForm.get('address')?.touched">
+              <label for="direccion">Dirección*</label>
+              <div class="invalid-feedback" *ngIf="branchForm.get('address')?.hasError('required')">
+                Este campo es requerido
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="ciudad" formControlName="city" 
+                     placeholder="Ciudad"
+                     [class.is-invalid]="branchForm.get('city')?.invalid && branchForm.get('city')?.touched">
+              <label for="ciudad">Ciudad*</label>
+              <div class="invalid-feedback" *ngIf="branchForm.get('city')?.hasError('required')">
+                Este campo es requerido
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="tel" class="form-control" id="telefono" formControlName="phone" 
+                     placeholder="Teléfono"
+                     [class.is-invalid]="branchForm.get('phone')?.invalid && branchForm.get('phone')?.touched">
+              <label for="telefono">Teléfono*</label>
+              <div class="invalid-feedback" *ngIf="branchForm.get('phone')?.hasError('required')">
+                Este campo es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="branchForm.get('phone')?.hasError('pattern')">
+                Ingrese un teléfono válido (10 dígitos)
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="estado" formControlName="status"
+                      [class.is-invalid]="branchForm.get('status')?.invalid && branchForm.get('status')?.touched">
+                <option value="active">Activa</option>
+                <option value="inactive">Inactiva</option>
+              </select>
+              <label for="estado">Estado*</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="email" class="form-control" id="email" formControlName="email" 
+                     placeholder="Email"
+                     [class.is-invalid]="branchForm.get('email')?.invalid && branchForm.get('email')?.touched">
+              <label for="email">Email*</label>
+              <div class="invalid-feedback" *ngIf="branchForm.get('email')?.hasError('required')">
+                Este campo es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="branchForm.get('email')?.hasError('email')">
+                Ingrese un email válido
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="encargado" formControlName="manager" 
+                     placeholder="Encargado"
+                     [class.is-invalid]="branchForm.get('manager')?.invalid && branchForm.get('manager')?.touched">
+              <label for="encargado">Encargado*</label>
+              <div class="invalid-feedback" *ngIf="branchForm.get('manager')?.hasError('required')">
+                Este campo es requerido
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="submit" class="btn btn-primary" [disabled]="branchForm.invalid">
+            <i class="bi bi-save me-2"></i>Guardar Sucursal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

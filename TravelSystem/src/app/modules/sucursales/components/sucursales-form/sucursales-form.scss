@@ -1,0 +1,184 @@
+@use '../../../../../styles/variables.scss' as vars;
+
+.sucursal-form-container {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .card {
+    border: none;
+    border-radius: vars.$border-radius-lg;
+    overflow: hidden;
+    box-shadow: vars.$shadow;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &-header {
+      background: vars.$gradient-primary;
+      color: vars.$white;
+      padding: 1.25rem 1.5rem;
+      border-bottom: none;
+
+      h5 {
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.25rem;
+      }
+    }
+
+    &-body {
+      flex: 1;
+      padding: 2rem;
+      background-color: vars.$white;
+    }
+  }
+
+  .form-floating {
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    label {
+      color: vars.$text-muted;
+      font-size: 0.9rem;
+      transition: vars.$transition-base;
+      background: transparent;
+      padding: 0 0.25rem;
+      left: 0.75rem;
+    }
+
+    .form-control, .form-select {
+      height: calc(3.25rem + 2px);
+      padding: 1rem 0.75rem;
+      border: 1px solid vars.$border-color;
+      border-radius: vars.$border-radius;
+      background-color: vars.$white;
+      color: vars.$text-color;
+      transition: vars.$transition-base;
+
+      &:focus {
+        border-color: vars.$primary;
+        box-shadow: 0 0 0 0.25rem rgba(vars.$primary, 0.25);
+        
+        & + label {
+          color: vars.$primary;
+        }
+      }
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%234361ee' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 16px 12px;
+    }
+
+    .invalid-feedback {
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      color: vars.$danger;
+    }
+
+    &.is-invalid {
+      .form-control, .form-select {
+        border-color: vars.$danger;
+        
+        &:focus {
+          box-shadow: 0 0 0 0.25rem rgba(vars.$danger, 0.25);
+        }
+      }
+    }
+  }
+
+  .btn-primary {
+    background: vars.$gradient-primary;
+    border: none;
+    padding: 0.625rem 1.5rem;
+    font-weight: 500;
+    min-width: 180px;
+    transition: vars.$transition-base;
+    
+    &:hover {
+      background-position: right center;
+      transform: translateY(-2px);
+      box-shadow: vars.$shadow;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: vars.$gray-500;
+      transform: none;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+
+  .border-top {
+    border-top: 1px solid vars.$border-color !important;
+  }
+}
+
+.dark-theme {
+  &.sucursal-form-container, 
+  .sucursal-form-container {
+    .card {
+      &-header {
+        background: rgb(51, 109, 51);
+      }
+
+      &-body {
+        background-color: vars.$darken;
+        color: vars.$white;
+      }
+      
+    }
+
+    .form-floating {
+      label {
+        color: rgba(vars.$white, 0.7);
+      }
+
+      .form-control, 
+      .form-select {
+        background-color: rgb(90, 103, 116);
+        border-color: rgba(vars.$white, 0.15);
+        color: vars.$white;
+
+        &:focus {
+          border-color: vars.$primary-light;
+          box-shadow: 0 0 0 0.25rem rgba(vars.$primary-light, 0.25);
+          
+          & + label {
+            color: vars.$primary-light;
+            
+          }
+        }
+      }
+    }
+
+    .btn-primary {
+      background: rgba(vars.$danger, 0.50);
+    }
+
+    .border-top {
+      border-top-color: rgba(vars.$white, 0.1) !important;
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .sucursal-form-container {
+    margin-top: 0;
+    height: auto;
+    
+    .card {
+      border-radius: vars.$border-radius-lg;
+    }
+  }
+}

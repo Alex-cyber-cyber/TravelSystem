@@ -29,12 +29,32 @@
           <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">3</span>
         </div>
         
-        <div class="user-profile dropdown" (click)="toggleUserMenu()">
-          <div class="d-flex align-items-center cursor-pointer">
-            <div class="avatar me-2">{{ userInitials }}</div>
+        <div class="user-profile dropdown" (click)="$event.stopPropagation()">
+        <div class="d-flex align-items-center cursor-pointer" (click)="toggleUserMenu()">
+            <div class="avatar me-2" [ngStyle]="avatarStyle">{{ userInitials }}</div>
             <span class="user-name me-2 d-none d-md-inline">{{ userName }}</span>
-            <i class="bi bi-chevron-down arrow"></i>
-          </div>
+            <i class="bi bi-chevron-down arrow" [class.rotate-180]="showUserMenu"></i>
+        </div>
+        
+        <div class="user-menu dropdown-menu dropdown-menu-end" [class.show]="showUserMenu">
+            <div class="dropdown-header">
+            <div class="d-flex align-items-center">
+                <div class="avatar me-2" [ngStyle]="avatarStyle">{{ userInitials }}</div>
+                <div>
+                <div class="fw-bold">{{ userName }}</div>
+                <div class="small text-muted">{{ userEmail }}</div>
+                </div>
+            </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item d-flex align-items-center" (click)="setActive('mi-perfil'); closeUserMenu()">
+            <i class="bi bi-person me-2"></i> Mi Perfil
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item d-flex align-items-center" (click)="logout(); closeUserMenu()">
+            <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+            </a>
+        </div>
         </div>
       </div>
     </div>
@@ -56,7 +76,7 @@
       </div>
 
       <div class="nav-section flex-grow-1">
-        <h3 class="section-title">ADMINISTRACIÓN</h3>
+        <h3 class="section-title">BANDEJAS DE ENTRADA</h3>
         <ul class="nav-list list-unstyled">
           <li class="nav-item has-submenu" [class.open]="sucursalesMenuOpen">
             <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('sucursales')">
@@ -64,12 +84,19 @@
               <span class="menu-text flex-grow-1">Sucursales</span>
               <i class="bi bi-chevron-down submenu-arrow"></i>
             </div>
+            
             <ul class="submenu list-unstyled">
+               <li [class.active]="activeItem === 'registrar-sucursal'">
+                <a class="d-block" (click)="setActive('registrar-sucursal')">
+                    <span>Registrar Sucursal</span>
+                </a>
+                </li>
               <li [class.active]="activeItem === 'asignar-sucursales'">
                 <a href="#" class="d-block" (click)="setActive('asignar-sucursales')">
                   <span>Asignar Sucursales</span>
                 </a>
               </li>
+              
               <li [class.active]="activeItem === 'gestionar-asignaciones'">
                 <a href="#" class="d-block" (click)="setActive('gestionar-asignaciones')">
                   <span>Gestionar Asignaciones</span>
@@ -97,6 +124,26 @@
               </li>
             </ul>
           </li>
+           <li class="nav-item has-submenu" [class.open]="personalMenuOpen">
+    <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('personal')">
+      <i class="bi bi-people me-3"></i>
+      <span class="menu-text flex-grow-1">Personal</span>
+      <i class="bi bi-chevron-down submenu-arrow"></i>
+    </div>
+    <ul class="submenu list-unstyled">
+      <li [class.active]="activeItem === 'registrar-personal'">
+        <a href="#" class="d-block" (click)="setActive('registrar-personal')">
+          <span>Registrar Nuevo</span>
+        </a>
+      </li>
+      <li [class.active]="activeItem === 'gestion-personal'">
+        <a href="#" class="d-block" (click)="setActive('gestion-personal')">
+          <span>Gestión de Personal</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+
 
           <li class="nav-item" [class.active]="activeItem === 'reportes'">
             <a href="#" class="d-flex align-items-center" (click)="setActive('reportes')">
@@ -124,9 +171,13 @@
     </nav>
   </aside>
 
-  <main class="dashboard-main" [class.menu-active]="menuActive">
-    <div class="container-fluid py-4">
-      <router-outlet></router-outlet>
+ <main class="dashboard-main" [class.menu-active]="menuActive">
+    <div class="container-fluid py-4 h-100">
+<app-sucursales-form
+  *ngIf="activeItem === 'registrar-sucursal'"
+  class="h-100"
+  [darkMode]="darkMode">
+</app-sucursales-form>
     </div>
   </main>
 </div>
