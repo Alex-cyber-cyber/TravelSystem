@@ -3,9 +3,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const config = require('../config'); // Importa la configuración
+const config = require('../config'); 
 const registerRoutes = require('./routes/register/register');
 const authRoutes = require('./routes/auth/authRoutes');
+const sucursalRoutes = require('./routes/sucursal/sucursal');
 
 const app = express();
 
@@ -25,5 +26,6 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use('/api/register', registerRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/sucursal', sucursalRoutes);
 
 module.exports = app;
