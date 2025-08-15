@@ -110,10 +110,10 @@
             </div>
           </div>
         </div>
-
         <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
           <button type="submit" class="btn btn-primary" [disabled]="branchForm.invalid">
-            <i class="bi bi-save me-2"></i>Guardar Sucursal
+            <i class="bi bi-save me-2"></i>
+            <span *ngIf="!isLoading">Guardar Sucursal</span>
           </button>
         </div>
       </form>

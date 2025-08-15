@@ -1,6 +1,6 @@
 import {
   MatCommonModule
-} from "./chunk-JHGWUVWE.js";
+} from "./chunk-Z5VUW75P.js";
 import "./chunk-5STY4K4A.js";
 import "./chunk-K22XNNTB.js";
 import "./chunk-7YNU2LOE.js";
@@ -26,8 +26,8 @@ import {
   ɵɵprojection,
   ɵɵprojectionDef
 } from "./chunk-DMSQSH77.js";
-import "./chunk-G6ECYYJH.js";
 import "./chunk-YVXMBCE5.js";
+import "./chunk-G6ECYYJH.js";
 import "./chunk-RTGP7ALM.js";
 import "./chunk-WDMUDEB6.js";
 

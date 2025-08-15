@@ -26,6 +26,6 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use('/api/register', registerRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/sucursal', sucursalRoutes);
+app.use('/api/sucursales', sucursalRoutes);
 
 module.exports = app;
