@@ -5,7 +5,6 @@ exports.createRegister = async (req, res) => {
     try {
         console.log('Datos recibidos en backend:', req.body);
         
-        // Validación mejorada
         const requiredFields = ['employeeId', 'nombres', 'apellidos', 'correo', 'telefono', 'departamento', 'role', 'password'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
         
@@ -16,7 +15,6 @@ exports.createRegister = async (req, res) => {
             });
         }
 
-        // Verificar si el usuario ya existe
         const existingUser = await User.findOne({ 
             $or: [
                 { employeeId: req.body.employeeId },
@@ -31,7 +29,6 @@ exports.createRegister = async (req, res) => {
             });
         }
 
-        // Crear nuevo usuario
         const newUser = new User(req.body);
         await newUser.save();
 

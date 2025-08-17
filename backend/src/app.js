@@ -29,7 +29,7 @@ mongoose.connection.once('open', () => {
 });
 
 
-app.use('/api/register', registerRoutes);
+app.use('/api/auth/register', registerRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/sucursales', sucursalRoutes);
 app.use('/api/employees', EmployeeRoutes);
