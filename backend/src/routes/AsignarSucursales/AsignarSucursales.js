@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const AsignarSucursales = require('../../controllers/AsignarSucursales/AsignarSucursales');
 
+
+router.use((req, res, next) => {
+    console.log(`Solicitud recibida: ${req.method} ${req.url}`);
+    next();
+});
+
 router.post('/', async (req, res) => {
     const { personal_id, sucursal_id, distancia_km } = req.body;
     try {

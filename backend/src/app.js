@@ -24,12 +24,16 @@ mongoose.connect(config.MONGODB_URI)
   .then(() => console.log('✅ Conectado a MongoDB'))
   .catch(err => console.error('❌ Error de conexión:', err));
 
+mongoose.connection.once('open', () => {
+    console.log('Modelos registrados:', mongoose.modelNames());
+});
+
 
 app.use('/api/register', registerRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/sucursales', sucursalRoutes);
-app.use('/api/employees', EmployeeRoutes); 
-app.use('/api/AsignarSucursales', AsignarSucursales);
+app.use('/api/employees', EmployeeRoutes);
+app.use('/api/AsignarSucursales', require('./routes/AsignarSucursales/AsignarSucursales'));
 
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.path}`);

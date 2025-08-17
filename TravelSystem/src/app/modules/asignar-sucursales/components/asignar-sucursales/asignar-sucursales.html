@@ -1,41 +1,90 @@
 <div class="container-fluid p-4" [class.dark-theme]="darkMode">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="mb-0">Asignaciones de Sucursales</h2>
+    <button class="btn btn-primary me-2" (click)="exportarAExcel()">
+      <i class="bi bi-file-earmark-excel me-2"></i>Exportar a Excel
+    </button>
     <button class="btn btn-primary" (click)="abrirModal()">
       <i class="bi bi-plus-circle me-2"></i>Nueva Asignación
     </button>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Buscar colaborador o sucursal..." 
+               [(ngModel)]="terminoBusqueda" (input)="filtrarAsignaciones()">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="filtroSucursal" (change)="filtrarAsignaciones()">
+        <option value="">Todas las sucursales</option>
+        <option *ngFor="let sucursal of sucursalesUnicas" [value]="sucursal">
+          {{ sucursal }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="filtroDistancia" (change)="filtrarAsignaciones()">
+        <option value="">Todas las distancias</option>
+        <option value="cercanas">Menos de 10 km</option>
+        <option value="medias">10-30 km</option>
+        <option value="lejanas">Más de 30 km</option>
+      </select>
+    </div>
   </div>
 
   <div class="table-responsive">
     <table class="table table-hover align-middle">
       <thead class="table-primary">
         <tr>
-          <th scope="col">Colaborador</th>
-          <th scope="col">Sucursal</th>
-          <th scope="col">Distancia (km)</th>
+          <th scope="col" (click)="ordenarPor('personal_id.nombres')">
+            Colaborador <i class="bi bi-arrow-down-up"></i>
+          </th>
+          <th scope="col" (click)="ordenarPor('sucursal_id.name')">
+            Sucursal <i class="bi bi-arrow-down-up"></i>
+          </th>
+          <th scope="col" (click)="ordenarPor('distancia_km')">
+            Distancia (km) <i class="bi bi-arrow-down-up"></i>
+          </th>
           <th scope="col" class="text-end">Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of asignaciones">
+        <tr *ngFor="let item of asignacionesFiltradas">
           <td>
-            <div class="fw-semibold">{{ item.personal_id.nombre }}</div>
-            <small class="text-muted">{{ item.personal_id.idEmpleado }}</small>
+            <div class="fw-semibold">{{ item.personal_id?.nombres || 'N/A' | slice:0:20 }}{{ item.personal_id?.nombres?.length > 20 ? '...' : '' }}</div>
+            <small class="text-muted">{{ item.personal_id?.idEmpleado || '--' }}</small>
           </td>
-          <td>{{ item.sucursal.nombre }}</td>
-          <td>{{ item.distancia | number:'1.2-2' }}</td>
+          <td>{{ item.sucursal_id?.name || 'N/A' }}</td>
+          <td>{{ item.distancia_km | number:'1.2-2' }}</td>
           <td class="text-end">
             <button class="btn btn-sm btn-outline-danger" (click)="eliminarAsignacion(item.id)">
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
-        <tr *ngIf="asignaciones.length === 0">
+        <tr *ngIf="asignacionesFiltradas.length === 0">
           <td colspan="4" class="text-center py-4 text-muted">
-            No hay asignaciones registradas
+            No se encontraron asignaciones
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <nav *ngIf="asignacionesFiltradas.length > itemsPorPagina">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="paginaActual === 1">
+        <a class="page-link" (click)="paginaAnterior()">Anterior</a>
+      </li>
+      <li class="page-item" *ngFor="let pagina of paginas" [class.active]="pagina === paginaActual">
+        <a class="page-link" (click)="irAPagina(pagina)">{{ pagina }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
+        <a class="page-link" (click)="paginaSiguiente()">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
 </div>

@@ -33,10 +33,24 @@ async function obtenerSucursales() {
     return await Sucursal.find({}, 'name _id');
 }
 async function obtenerTodasAsignaciones() {
-    return await AsignarSucursales.find()
-    .populate('personal_id', 'nombres idEmpleado')
-    .populate('sucursal_id', 'name');
+    try {
+        const asignaciones = await AsignarSucursales.find().lean();
+        const resultados = await Promise.all(asignaciones.map(async (asignacion) => {
+            const personal = await Personal.findById(asignacion.personal_id, 'nombres idEmpleado');
+            const sucursal = await Sucursal.findById(asignacion.sucursal_id, 'name');
+            return {
+                ...asignacion,
+                personal_id: personal,
+                sucursal_id: sucursal
+            };
+        }));
+        return resultados;
+    } catch (error) {
+        console.error('Error en obtenerTodasAsignaciones:', error);
+        throw error;
+    }
 }
+
 async function eliminarAsignacion(id) {
     return await AsignarSucursales.findByIdAndDelete(id);
 }

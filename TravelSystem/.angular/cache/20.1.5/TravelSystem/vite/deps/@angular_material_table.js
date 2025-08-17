@@ -10,8 +10,8 @@ import {
   _ViewRepeaterOperation,
   isDataSource
 } from "./chunk-Z47WHKBK.js";
-import "./chunk-KAPXTIMC.js";
 import "./chunk-EOFW2REK.js";
+import "./chunk-KAPXTIMC.js";
 import {
   MatCommonModule
 } from "./chunk-YY6DZMGX.js";
@@ -20,11 +20,11 @@ import {
   Platform,
   _isNumberValue
 } from "./chunk-LJFN4TR3.js";
+import "./chunk-QVJ2TQXA.js";
+import "./chunk-DBQVMHQU.js";
 import {
   Directionality
 } from "./chunk-7YNU2LOE.js";
-import "./chunk-QVJ2TQXA.js";
-import "./chunk-DBQVMHQU.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

@@ -9,7 +9,7 @@
     <p class="dialog-subtitle">Complete los detalles para asignar la sucursal</p>
   </div>
   <div class="dialog-content">
-    <form [formGroup]="asignacionForm" class="assignment-form">
+    <form [formGroup]="asignacionForm" class="assignment-form" (ngSubmit)="guardar()">
       <div class="form-section">
         <label class="section-label">
           <span>Colaborador</span>
@@ -24,11 +24,14 @@
           placeholder="Seleccione un colaborador..."
           formControlName="personal_id"
           class="premium-select"
-          [ngClass]="{'input-invalid': asignacionForm.get('personal_id')?.invalid}">
+          [ngClass]="{'input-invalid': (asignacionForm.get('personal_id')?.invalid && (asignacionForm.get('personal_id')?.touched || formSubmitted))}"
+          (focus)="onFocus('personal')"
+          (search)="onSearch($event, 'personal')">
+          
           <ng-template ng-option-tmp let-item="item">
             <div class="select-item">
               <div class="item-avatar" [style.background]="getRandomColor(item.nombres)">
-                {{ item.nombres.charAt(0) | uppercase }}
+                {{ item.nombres?.charAt(0) | uppercase }}
               </div>
               <div class="item-details">
                 <div class="item-title">{{ item.nombres }}</div>
@@ -36,11 +39,18 @@
               </div>
             </div>
           </ng-template>
+          
           <ng-template ng-notfound-tmp>
             <div class="not-found-message">No se encontraron colaboradores</div>
           </ng-template>
         </ng-select>
+        
+        <div *ngIf="asignacionForm.get('personal_id')?.invalid && (asignacionForm.get('personal_id')?.touched || formSubmitted)" 
+             class="error-message">
+          {{ getErrorMessage('personal_id') }}
+        </div>
       </div>
+
       <div class="form-section">
         <label class="section-label">
           <span>Sucursal</span>
@@ -55,7 +65,10 @@
           placeholder="Seleccione una sucursal..."
           formControlName="sucursal_id"
           class="premium-select"
-          [ngClass]="{'input-invalid': asignacionForm.get('sucursal_id')?.invalid}">
+          [ngClass]="{'input-invalid': asignacionForm.get('sucursal_id')?.invalid && (asignacionForm.get('sucursal_id')?.touched || formSubmitted)}"
+          (focus)="onFocus('sucursal')"
+          (search)="onSearch($event, 'sucursal')">
+          
           <ng-template ng-option-tmp let-item="item">
             <div class="select-item">
               <div class="store-icon">
@@ -69,11 +82,17 @@
               </div>
             </div>
           </ng-template>
+          
           <ng-template ng-notfound-tmp>
             <div class="not-found-message">No se encontraron sucursales</div>
           </ng-template>
         </ng-select>
+
+        <div *ngIf="asignacionForm.get('sucursal_id')?.invalid && (asignacionForm.get('sucursal_id')?.touched || formSubmitted)" class="error-message">
+          {{ getErrorMessage('sucursal_id') }}
+        </div>
       </div>
+
       <div class="form-section">
         <label class="section-label">
           <span>Distancia (km)</span>
@@ -87,11 +106,19 @@
             placeholder="0.00"
             step="0.01"
             min="0.01"
-            [ngClass]="{'input-invalid': asignacionForm.get('distancia_km')?.invalid}">
+            max="50"
+            (input)="validarDistancia()"
+            [ngClass]="{'input-invalid': (asignacionForm.get('distancia_km')?.invalid && (asignacionForm.get('distancia_km')?.touched || formSubmitted))}">
           <span class="input-unit">km</span>
         </div>
-        <div class="input-hint">Distancia aproximada en kilómetros</div>
+        <div class="input-hint">Distancia debe ser entre 0.01 y 50 km</div>
+        
+        <div *ngIf="asignacionForm.get('distancia_km')?.invalid && (asignacionForm.get('distancia_km')?.touched || formSubmitted)" 
+             class="error-message">
+          {{ getErrorMessage('distancia_km') }}
+        </div>
       </div>
+
       <div class="error-container" *ngIf="showError">
         <div class="error-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -103,11 +130,12 @@
           <div class="error-message">{{ errorMessage }}</div>
         </div>
       </div>
+
       <div class="action-buttons">
         <button type="button" class="dialog-btn secondary-btn" (click)="cerrar()" [disabled]="loading">
           Cancelar
         </button>
-        <button type="submit" class="dialog-btn primary-btn" (click)="guardar()" [disabled]="!asignacionForm.valid || loading">
+        <button type="submit" class="dialog-btn primary-btn" [disabled]="loading">
           <span class="btn-spinner" *ngIf="loading"></span>
           <span>{{ loading ? 'Guardando...' : 'Guardar Asignación' }}</span>
         </button>

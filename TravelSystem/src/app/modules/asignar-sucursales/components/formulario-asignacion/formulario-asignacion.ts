@@ -6,6 +6,18 @@ import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
+interface ValidationMessages {
+  personal_id: { required: string };
+  sucursal_id: { required: string };
+  distancia_km: { 
+    required: string; 
+    min: string; 
+    max: string; 
+    pattern: string;
+    invalidDistance?: string;
+  };
+}
+
 @Component({
   selector: 'app-formulario-asignacion',
   standalone: true,
@@ -26,12 +38,28 @@ export class FormularioAsignacion implements OnDestroy {
   errorMessage: string = '';
   showError: boolean = false;
   loading: boolean = false;
+  formSubmitted: boolean = false;
 
   inputBusqueda$ = new Subject<string>();
   private currentSearchType: 'personal' | 'sucursal' = 'personal';
   private searchSubscription!: Subscription;
 
-  // Colores para avatares
+  validationMessages: ValidationMessages = {
+    personal_id: {
+      required: 'Debe seleccionar un colaborador'
+    },
+    sucursal_id: {
+      required: 'Debe seleccionar una sucursal'
+    },
+    distancia_km: {
+      required: 'La distancia es requerida',
+      min: 'La distancia mínima es 0.01 km',
+      max: 'La distancia máxima es 50 km',
+      pattern: 'Debe ser un número válido (ej: 5.25)',
+      invalidDistance: 'La distancia debe estar entre 0.01 y 50 km'
+    }
+  };
+
   private avatarColors = [
     '#4361ee', '#7209b7', '#f72585', '#4cc9f0', 
     '#4895ef', '#3f37c9', '#560bad', '#b5179e'
@@ -46,7 +74,12 @@ export class FormularioAsignacion implements OnDestroy {
     this.asignacionForm = this.fb.group({
       personal_id: ['', Validators.required],
       sucursal_id: ['', Validators.required],
-      distancia_km: ['', [Validators.required, Validators.min(0.01), Validators.max(50)]]
+      distancia_km: ['', [
+        Validators.required,
+        Validators.min(0.01),
+        Validators.max(50),
+        Validators.pattern(/^\d+(\.\d{1,2})?$/)
+      ]]
     });
 
     if (data?.darkMode !== undefined) {
@@ -57,8 +90,14 @@ export class FormularioAsignacion implements OnDestroy {
     this.cargarDatosIniciales();
   }
 
-  // Genera color consistente basado en el nombre
+  ngOnDestroy(): void {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
+
   getRandomColor(name: string): string {
+    if (!name) return this.avatarColors[0];
     const hash = name.split('').reduce((acc, char) => {
       return char.charCodeAt(0) + ((acc << 5) - acc);
     }, 0);
@@ -144,15 +183,55 @@ export class FormularioAsignacion implements OnDestroy {
     });
   }
 
+  validarDistancia(): void {
+    const control = this.asignacionForm.get('distancia_km');
+    if (control && control.value > 50) {
+      control.setValue(50);
+      control.markAsTouched();
+    } else if (control && control.value < 0.01 && control.value !== null && control.value !== '') {
+      control.setValue(0.01);
+      control.markAsTouched();
+    }
+  }
+
+  getErrorMessage(controlName: keyof ValidationMessages): string {
+    const control = this.asignacionForm.get(controlName);
+    
+    if (!control || !control.errors || !this.formSubmitted && !control.touched) {
+      return '';
+    }
+
+    const errors = control.errors;
+    
+    if (errors['required']) {
+      return this.validationMessages[controlName].required;
+    }
+    if (errors['min'] && 'min' in this.validationMessages[controlName]) {
+      return (this.validationMessages[controlName] as any).min;
+    }
+    if (errors['max'] && 'max' in this.validationMessages[controlName]) {
+      return (this.validationMessages[controlName] as any).max;
+    }
+    if (errors['pattern'] && controlName === 'distancia_km') {
+      return this.validationMessages.distancia_km.pattern;
+    }
+    
+    return '';
+  }
+
   guardar(): void {
+    this.formSubmitted = true;
+    
+    this.asignacionForm.markAllAsTouched();
+
     if (this.asignacionForm.valid) {
       this.showError = false;
       this.loading = true;
       
       this.asignarSucursalesService.crearAsignacion(this.asignacionForm.value).subscribe({
-        next: () => {
+        next: (nuevaAsignacion) => { 
           this.loading = false;
-          this.dialogRef.close(true);
+          this.dialogRef.close(nuevaAsignacion); 
         },
         error: (err) => {
           console.error('Error al crear asignación:', err);
@@ -160,6 +239,9 @@ export class FormularioAsignacion implements OnDestroy {
           this.handleError(err);
         }
       });
+    } else {
+      this.errorMessage = 'Por favor complete todos los campos requeridos correctamente';
+      this.showError = true;
     }
   }
 
@@ -181,11 +263,5 @@ export class FormularioAsignacion implements OnDestroy {
 
   cerrar(): void {
     this.dialogRef.close();
-  }
-
-  ngOnDestroy(): void {
-    if (this.searchSubscription) {
-      this.searchSubscription.unsubscribe();
-    }
   }
 }

@@ -7,11 +7,11 @@ import {
   _isTestEnvironment
 } from "./chunk-FGSOBVTW.js";
 import {
-  coerceCssPixelValue
-} from "./chunk-KAPXTIMC.js";
-import {
   supportsScrollBehavior
 } from "./chunk-EOFW2REK.js";
+import {
+  coerceCssPixelValue
+} from "./chunk-KAPXTIMC.js";
 import {
   ESCAPE,
   _IdGenerator,
@@ -26,12 +26,12 @@ import {
   Platform
 } from "./chunk-LJFN4TR3.js";
 import {
+  Location
+} from "./chunk-QVJ2TQXA.js";
+import {
   BidiModule,
   Directionality
 } from "./chunk-7YNU2LOE.js";
-import {
-  Location
-} from "./chunk-QVJ2TQXA.js";
 import {
   ANIMATION_MODULE_TYPE,
   ApplicationRef,
@@ -3451,4 +3451,4 @@ export {
   CdkConnectedOverlay,
   OverlayModule
 };
-//# sourceMappingURL=chunk-NNZUO5FN.js.map
+//# sourceMappingURL=chunk-VHXB35TZ.js.map
