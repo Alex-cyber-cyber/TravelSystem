@@ -1,1 +1,120 @@
-<p>employee-form works!</p>
+<div class="employee-form-container" [class.dark-theme]="darkMode">
+  <div class="card border-0 shadow">
+    <div class="card-header">
+      <h5 class="mb-0">Registrar Nuevo Empleado</h5>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="pt-3">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="employeeId" formControlName="employeeId" 
+                     placeholder="ID Empleado"
+                     [class.is-invalid]="employeeForm.get('employeeId')?.invalid && employeeForm.get('employeeId')?.touched">
+              
+              <div class="invalid-feedback" *ngIf="employeeForm.get('employeeId')?.hasError('required')">
+                Este campo es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="employeeForm.get('employeeId')?.hasError('pattern')">
+                Solo se permiten letras y números
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="nombres" formControlName="nombres" 
+                     placeholder="Nombres Completos"
+                     [class.is-invalid]="employeeForm.get('nombres')?.invalid && employeeForm.get('nombres')?.touched">
+              
+              <div class="invalid-feedback" *ngIf="employeeForm.get('nombres')?.hasError('required')">
+                Este campo es requerido
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="email" class="form-control" id="email" formControlName="email" 
+                     placeholder="Correo Electrónico"
+                     [class.is-invalid]="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched">
+              
+              <div class="invalid-feedback" *ngIf="employeeForm.get('email')?.hasError('required')">
+                Este campo es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="employeeForm.get('email')?.hasError('email')">
+                Ingrese un correo válido
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="tel" class="form-control" id="telefono" formControlName="telefono" 
+                     placeholder="Teléfono"
+                     [class.is-invalid]="employeeForm.get('telefono')?.invalid && employeeForm.get('telefono')?.touched">
+              
+              <div class="invalid-feedback" *ngIf="employeeForm.get('telefono')?.hasError('required')">
+                Este campo es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="employeeForm.get('telefono')?.hasError('pattern')">
+                Ingrese un teléfono válido (11 dígitos)
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <select class="form-select" id="departamento" formControlName="departamento"
+                      [class.is-invalid]="employeeForm.get('departamento')?.invalid && employeeForm.get('departamento')?.touched">
+                <option value="">Seleccione un departamento</option>
+                <option value="Ventas">Ventas</option>
+                <option value="TI">TI</option>
+                <option value="Recursos Humanos">Recursos Humanos</option>
+                <option value="Administración">Administración</option>
+                <option value="Operaciones">Operaciones</option>
+              </select>
+              <label for="departamento">Departamento*</label>
+              <div class="invalid-feedback" *ngIf="employeeForm.get('departamento')?.hasError('required')">
+                Seleccione un departamento
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="date" class="form-control" id="fechaContratacion" formControlName="fechaContratacion" 
+                     [class.is-invalid]="employeeForm.get('fechaContratacion')?.invalid && employeeForm.get('fechaContratacion')?.touched">
+              <label for="fechaContratacion">Fecha de Contratación*</label>
+              <div class="invalid-feedback" *ngIf="employeeForm.get('fechaContratacion')?.hasError('required')">
+                Seleccione una fecha
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <select class="form-select" id="estado" formControlName="estado"
+                      [class.is-invalid]="employeeForm.get('estado')?.invalid && employeeForm.get('estado')?.touched">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+              <label for="estado">Estado*</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isLoading">
+            <i class="bi bi-x-circle me-2"></i>Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="employeeForm.invalid || isLoading">
+            <i class="bi bi-save me-2"></i>
+            <span *ngIf="!isLoading">Guardar Empleado</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

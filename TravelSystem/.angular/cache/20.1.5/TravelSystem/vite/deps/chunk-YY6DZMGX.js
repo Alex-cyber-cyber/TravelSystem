@@ -5,7 +5,7 @@ import {
   Platform,
   coerceElement,
   coerceNumberProperty
-} from "./chunk-K22XNNTB.js";
+} from "./chunk-LJFN4TR3.js";
 import {
   BidiModule
 } from "./chunk-7YNU2LOE.js";
@@ -1926,14 +1926,6 @@ var A11yModule = class _A11yModule {
   }], () => [], null);
 })();
 
-// node_modules/@angular/cdk/fesm2022/keycodes.mjs
-function hasModifierKey(event, ...modifiers) {
-  if (modifiers.length) {
-    return modifiers.some((modifier) => event[modifier]);
-  }
-  return event.altKey || event.shiftKey || event.ctrlKey || event.metaKey;
-}
-
 // node_modules/@angular/cdk/fesm2022/id-generator-LuoRZSid.mjs
 var counters = {};
 var _IdGenerator = class __IdGenerator {
@@ -1968,6 +1960,14 @@ var _IdGenerator = class __IdGenerator {
     }]
   }], null, null);
 })();
+
+// node_modules/@angular/cdk/fesm2022/keycodes.mjs
+function hasModifierKey(event, ...modifiers) {
+  if (modifiers.length) {
+    return modifiers.some((modifier) => event[modifier]);
+  }
+  return event.altKey || event.shiftKey || event.ctrlKey || event.metaKey;
+}
 
 // node_modules/@angular/cdk/fesm2022/typeahead-9ZW4Dtsf.mjs
 var DEFAULT_TYPEAHEAD_DEBOUNCE_INTERVAL_MS = 200;
@@ -3121,11 +3121,11 @@ export {
   FocusTrapFactory,
   LiveAnnouncer,
   A11yModule,
-  hasModifierKey,
   _IdGenerator,
+  hasModifierKey,
   ActiveDescendantKeyManager,
   addAriaReferencedId,
   removeAriaReferencedId,
   MatCommonModule
 };
-//# sourceMappingURL=chunk-Z5VUW75P.js.map
+//# sourceMappingURL=chunk-YY6DZMGX.js.map

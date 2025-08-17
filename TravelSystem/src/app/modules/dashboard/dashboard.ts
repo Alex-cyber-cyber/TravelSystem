@@ -5,10 +5,12 @@ import { AuthService } from '../../core/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { SucursalesForm } from '../sucursales/components/sucursales-form/sucursales-form';
 import { MatDialog } from '@angular/material/dialog';
+import { EmployeeForm } from '../personal/components/employee-form/employee-form';
+import { AsignarSucursales } from '../asignar-sucursales/components/asignar-sucursales/asignar-sucursales';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm],
+  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm, EmployeeForm,AsignarSucursales],
   standalone: true,
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
@@ -30,7 +32,7 @@ export class Dashboard implements OnInit, OnDestroy {
   userRole = '';
   userAvatarColor = '#4361ee'; 
   personalMenuOpen = true;
-  
+  employeeMenuOpen = true;
 
   unreadNotifications = 3;
 
@@ -131,8 +133,8 @@ export class Dashboard implements OnInit, OnDestroy {
       this.sucursalesMenuOpen = !this.sucursalesMenuOpen;
     } else if (menu === 'viajes') {
       this.viajesMenuOpen = !this.viajesMenuOpen;
-    } else if (menu === 'personal') {
-      this.personalMenuOpen = !this.personalMenuOpen; 
+    } else if (menu === 'empleados') {
+      this.employeeMenuOpen = !this.employeeMenuOpen;
     }
   }
 
@@ -165,6 +167,28 @@ export class Dashboard implements OnInit, OnDestroy {
       'color': 'white'
     };
   }
+  
+   handleRegistrarEmpleado(event: Event): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setActive('registrar-empleado');
+      }
+    openEmpleadoForm(): void {
+      if (!this.authService.isAuthenticated()) {
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      const dialogRefEmployee = this.dialog.open(EmployeeForm, {
+        width: '800px',
+        disableClose: true,
+        panelClass: this.darkMode ? 'dark-theme' : ''
+      });
+      dialogRefEmployee.afterClosed().subscribe(result => {
+        console.log('El diálogo de empleado fue cerrado');
+      });
+    }
+    
   handleRegistrarSucursal(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
@@ -172,12 +196,13 @@ export class Dashboard implements OnInit, OnDestroy {
     this.openSucursalForm();
   }
 
+
   openSucursalForm(): void {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
       return;
     }
-
+ 
     const dialogRef = this.dialog.open(SucursalesForm, {
       width: '800px',
       disableClose: true,
@@ -188,5 +213,12 @@ export class Dashboard implements OnInit, OnDestroy {
       console.log('El diálogo fue cerrado');
     });
   }
+
+  handleAsignarSucursales(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setActive('asignar-sucursales');
+  }
 }
+
 

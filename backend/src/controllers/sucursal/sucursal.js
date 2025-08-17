@@ -1,14 +1,9 @@
 const sucursal = require('../../models/sucursal/sucursal');
-
 exports.createSucursal = async (req, res) => {
     try {
         const { name, code, address, city, phone, state, email, manager } = req.body;
-
         const active = req.body.active || true;
         console.log('Datos recibidos en backend:', req.body);
-
-
-        // Crear nueva sucursal
         const newSucursal = new sucursal({
             name,
             code,
@@ -20,7 +15,6 @@ exports.createSucursal = async (req, res) => {
             manager
         });
 
-        // Guardar en la base de datos
         await newSucursal.save();
         res.status(201).json({
             success: true,
@@ -56,15 +50,11 @@ exports.createSucursal = async (req, res) => {
 
 exports.getSucursales = async (req, res) => {
     try {
-        const sucursales = await sucursal.find();
-        res.status(200).json({
-            success: true,
-            data: sucursales
-        });
+        const sucursales = await sucursal.find({}, 'name code _id');
+        console.log('Datos de sucursales encontrados:', sucursales); 
+        res.status(200).json(sucursales);
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message || 'Error interno del servidor'
-        });
+        console.error('Error al obtener sucursales:', error);
+        res.status(500).json([]); 
     }
 }

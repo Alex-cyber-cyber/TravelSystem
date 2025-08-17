@@ -1,0 +1,41 @@
+<div class="container-fluid p-4" [class.dark-theme]="darkMode">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Asignaciones de Sucursales</h2>
+    <button class="btn btn-primary" (click)="abrirModal()">
+      <i class="bi bi-plus-circle me-2"></i>Nueva Asignación
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">Colaborador</th>
+          <th scope="col">Sucursal</th>
+          <th scope="col">Distancia (km)</th>
+          <th scope="col" class="text-end">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of asignaciones">
+          <td>
+            <div class="fw-semibold">{{ item.personal_id.nombre }}</div>
+            <small class="text-muted">{{ item.personal_id.idEmpleado }}</small>
+          </td>
+          <td>{{ item.sucursal.nombre }}</td>
+          <td>{{ item.distancia | number:'1.2-2' }}</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-danger" (click)="eliminarAsignacion(item.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="asignaciones.length === 0">
+          <td colspan="4" class="text-center py-4 text-muted">
+            No hay asignaciones registradas
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

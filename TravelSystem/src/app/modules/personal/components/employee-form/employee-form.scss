@@ -1,0 +1,158 @@
+@use '../../../../../styles/variables.scss' as vars;
+@use '../../../../../styles/mixins.scss' as mix;
+
+.employee-form-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100%;
+  transition: vars.$transition-base;
+
+  .card {
+    border-radius: vars.$border-radius-lg;
+    overflow: hidden;
+    @include mix.elevation(2);
+    transition: vars.$transition-base;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+
+    .card-header {
+      background: vars.$gradient-primary;
+      color: vars.$white;
+      padding: 1.25rem 2rem;
+      border-bottom: none;
+      
+      h5 {
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.25rem;
+      }
+    }
+
+    .card-body {
+      padding: 2rem;
+
+      form {
+        .row {
+          margin-bottom: 1rem;
+        }
+
+        .form-floating {
+          position: relative;
+          margin-bottom: 1.5rem;
+
+          label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            left: 0.75rem;
+            transition: vars.$transition-base;
+          }
+
+          .form-control, .form-select {
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: vars.$border-radius;
+            padding: 1rem 0.75rem;
+            height: calc(3.5rem + 2px);
+
+            &:focus {
+              @include mix.focus-effect(vars.$primary);
+              background-color: var(--input-focus-bg);
+            }
+
+            &::placeholder {
+              color: var(--text-placeholder);
+            }
+          }
+
+          .invalid-feedback {
+            color: vars.$danger;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+          }
+
+          .is-invalid {
+            border-color: vars.$danger;
+            
+            &:focus {
+              @include mix.focus-effect(vars.$danger);
+            }
+          }
+        }
+      }
+
+      .border-top {
+        border-color: var(--border-color) !important;
+      }
+
+      .btn {
+        border-radius: vars.$border-radius;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        transition: vars.$transition-base;
+
+        &.btn-primary {
+          @include mix.gradient-button();
+          @include mix.elevation(1);
+
+          &:hover {
+            transform: translateY(-2px);
+            @include mix.elevation(2);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
+
+        &.btn-secondary {
+          background-color: var(--btn-secondary-bg);
+          color: var(--btn-secondary-color);
+          border: 1px solid var(--border-color);
+
+          &:hover {
+            background-color: var(--btn-secondary-hover);
+          }
+        }
+
+        &:disabled {
+          opacity: 0.65;
+          transform: none !important;
+        }
+      }
+    }
+  }
+
+  &.dark-theme {
+    --card-bg: #{vars.$dark};
+    --text-primary: #{vars.$light};
+    --text-secondary: #{lighten(vars.$dark, 50%)};
+    --input-bg: #{lighten(vars.$dark, 10%)};
+    --input-focus-bg: #{lighten(vars.$dark, 15%)};
+    --border-color: #{lighten(vars.$dark, 20%)};
+    --text-placeholder: #{lighten(vars.$dark, 40%)};
+    --btn-secondary-bg: #{lighten(vars.$dark, 10%)};
+    --btn-secondary-color: #{vars.$light};
+    --btn-secondary-hover: #{lighten(vars.$dark, 15%)};
+
+    .card-header {
+      background: vars.$gradient-dark;
+    }
+
+
+  }
+
+  &:not(.dark-theme) {
+    --card-bg: #{vars.$white};
+    --text-primary: #{vars.$dark};
+    --text-secondary: #{vars.$gray-700};
+    --input-bg: #{vars.$white};
+    --input-focus-bg: #{vars.$white};
+    --border-color: #{vars.$gray-300};
+    --text-placeholder: #{vars.$gray-500};
+    --btn-secondary-bg: #{vars.$white};
+    --btn-secondary-color: #{vars.$dark};
+    --btn-secondary-hover: #{vars.$gray-100};
+  }
+}

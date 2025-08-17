@@ -7,7 +7,7 @@ import {
   Platform,
   coerceElement,
   coerceNumberProperty
-} from "./chunk-K22XNNTB.js";
+} from "./chunk-LJFN4TR3.js";
 import {
   BidiModule,
   Directionality
@@ -1683,6 +1683,11 @@ var ScrollingModule = class _ScrollingModule {
 })();
 
 export {
+  DataSource,
+  isDataSource,
+  _ViewRepeaterOperation,
+  _VIEW_REPEATER_STRATEGY,
+  _RecycleViewRepeaterStrategy,
   VIRTUAL_SCROLL_STRATEGY,
   FixedSizeVirtualScrollStrategy,
   _fixedSizeVirtualScrollStrategyFactory,
@@ -1701,4 +1706,4 @@ export {
   CdkScrollableModule,
   ScrollingModule
 };
-//# sourceMappingURL=chunk-Y4NC6APO.js.map
+//# sourceMappingURL=chunk-Z47WHKBK.js.map

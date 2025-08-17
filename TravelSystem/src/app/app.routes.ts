@@ -3,6 +3,8 @@ import { Register } from './modules/auth/register/register';
 import { Dashboard } from './modules/dashboard/dashboard';
 import { authGuard } from './core/guards/auth.guard';
 import { SucursalesForm } from './modules/sucursales/components/sucursales-form/sucursales-form';
+import { EmployeeForm } from './modules/personal/components/employee-form/employee-form';
+import { AsignarSucursales } from './modules/asignar-sucursales/components/asignar-sucursales/asignar-sucursales';
 
 export const routes: Routes = [{
     path: 'login',
@@ -16,5 +18,8 @@ export const routes: Routes = [{
 { path: 'register', component: Register },
 {path: 'dashboard', component: Dashboard, canActivate: [authGuard], 
   children: [
-  {path: 'sucursales', component: SucursalesForm}]},
+  {path: 'sucursales', component: SucursalesForm},
+  {path: 'employee', component: EmployeeForm},
+  {path: 'asignar-sucursales', component: AsignarSucursales}
+]},
 {path: '**', redirectTo: 'login'}];

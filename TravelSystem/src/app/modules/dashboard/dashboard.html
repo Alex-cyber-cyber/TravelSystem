@@ -92,7 +92,7 @@
                 </a>
                 </li>
               <li [class.active]="activeItem === 'asignar-sucursales'">
-                <a href="#" class="d-block" (click)="setActive('asignar-sucursales')">
+                <a href="#" class="d-block" (click)="handleAsignarSucursales($event)">
                   <span>Asignar Sucursales</span>
                 </a>
               </li>
@@ -124,21 +124,21 @@
               </li>
             </ul>
           </li>
-           <li class="nav-item has-submenu" [class.open]="personalMenuOpen">
-    <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('personal')">
+          <li class="nav-item has-submenu" [class.open]="employeeMenuOpen">
+    <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('employee')">
       <i class="bi bi-people me-3"></i>
-      <span class="menu-text flex-grow-1">Personal</span>
+      <span class="menu-text flex-grow-1">Empleados</span>
       <i class="bi bi-chevron-down submenu-arrow"></i>
     </div>
     <ul class="submenu list-unstyled">
-      <li [class.active]="activeItem === 'registrar-personal'">
-        <a href="#" class="d-block" (click)="setActive('registrar-personal')">
+      <li [class.active]="activeItem === 'registrar-empleado'">
+        <a href="#" class="d-block" (click)="handleRegistrarEmpleado($event)">
           <span>Registrar Nuevo</span>
         </a>
       </li>
-      <li [class.active]="activeItem === 'gestion-personal'">
-        <a href="#" class="d-block" (click)="setActive('gestion-personal')">
-          <span>Gestión de Personal</span>
+      <li [class.active]="activeItem === 'gestion-empleados'">
+        <a href="#" class="d-block" (click)="setActive('gestion-empleados')">
+          <span>Gestión de Empleados</span>
         </a>
       </li>
     </ul>
@@ -173,11 +173,23 @@
 
  <main class="dashboard-main" [class.menu-active]="menuActive">
     <div class="container-fluid py-4 h-100">
-<app-sucursales-form
-  *ngIf="activeItem === 'registrar-sucursal'"
-  class="h-100"
-  [darkMode]="darkMode">
-</app-sucursales-form>
+      <app-sucursales-form
+        *ngIf="activeItem === 'registrar-sucursal'"
+        class="h-100"
+        [darkMode]="darkMode">
+      </app-sucursales-form>
+
+      <app-employee-form
+        *ngIf="activeItem === 'registrar-empleado'"
+        class="h-100"
+        [darkMode]="darkMode">
+      </app-employee-form>
+
+       <app-asignar-sucursales
+      *ngIf="activeItem === 'asignar-sucursales'"
+      class="h-100"
+      [darkMode]="darkMode">
+    </app-asignar-sucursales>
     </div>
   </main>
 </div>
