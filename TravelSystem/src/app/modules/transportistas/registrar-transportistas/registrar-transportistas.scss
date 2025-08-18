@@ -1,0 +1,127 @@
+@use '../../../../styles/variables.scss' as vars;
+@use '../../../../styles/mixins.scss' as mix;
+
+.transportista-form {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  font-family: vars.$font-family-sans-serif;
+  color: vars.$text-color;
+
+  .card-transportista {
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$border-radius-lg;
+    background: vars.$white;
+    @include mix.elevation(2);
+
+    .card-header {
+      border-bottom: 1px solid vars.$border-color;
+      padding: 1rem 1.25rem;
+      border-top-left-radius: vars.$border-radius-lg;
+      border-top-right-radius: vars.$border-radius-lg;
+      background: vars.$gradient-primary;
+      color: vars.$text-light;
+
+      .badge {
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.25);
+      }
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      @media (min-width: 992px) {
+        padding: 1.75rem;
+      }
+    }
+  }
+
+  .floating-field {
+    @include mix.floating-label;
+
+    .form-control {
+      height: 3.25rem;
+      border-radius: vars.$border-radius;
+      border: 1px solid vars.$border-color;
+      background-color: vars.$light;
+      transition: vars.$transition-base;
+
+      &:focus {
+        background-color: vars.$white;
+        @include mix.focus-effect(vars.$primary);
+      }
+
+      &.is-invalid {
+        border-color: vars.$danger;
+      }
+    }
+
+    label {
+      background: vars.$white;
+    }
+
+    .invalid-feedback {
+      display: block;
+      font-size: .85rem;
+    }
+  }
+
+  .form-actions {
+    margin-top: .25rem;
+
+    .btn {
+      padding: .65rem 1rem;
+      border-radius: vars.$border-radius;
+      transition: vars.$transition-base;
+
+      &.btn-gradient {
+        @include mix.gradient-button(vars.$gradient-primary);
+      }
+
+      &.btn-outline-secondary:hover {
+        transform: translateY(-1px);
+        @include mix.elevation(1);
+      }
+    }
+  }
+}
+
+:host-context(.dark-theme) .transportista-form,
+.transportista-form.dark-theme { 
+  color: vars.$text-light;
+
+  .card-transportista {
+    background: vars.$darken;
+    border-color: rgba(255,255,255,.08);
+
+    .card-header {
+      background: vars.$gradient-dark;
+      color: vars.$text-light;
+    }
+
+    .form-control {
+      background: rgba(255,255,255,.06);
+      color: vars.$text-light;
+      border-color: rgba(255,255,255,.12);
+
+      &::placeholder { color: rgba(255,255,255,.45); }
+      &:focus {
+        background: rgba(255,255,255,.08);
+      }
+    }
+
+    .floating-field label {
+      background: vars.$darken;
+      color: rgba(255,255,255,.75);
+    }
+
+    .invalid-feedback {
+      color: lighten(vars.$danger, 12%);
+    }
+  }
+
+  .btn-outline-secondary {
+    color: vars.$light;
+    border-color: rgba(255,255,255,.25);
+    &:hover { background: rgba(255,255,255,.08); }
+  }
+}

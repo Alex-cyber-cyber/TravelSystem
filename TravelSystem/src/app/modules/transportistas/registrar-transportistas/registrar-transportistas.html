@@ -1,0 +1,112 @@
+<div class="container-fluid transportista-form">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-8">
+      <div class="card card-transportista shadow-sm">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-truck fs-4"></i>
+            <h2 class="h4 mb-0">Registro de Transportistas</h2>
+          </div>
+          <span class="badge bg-primary-subtle text-primary-emphasis">Nuevo</span>
+        </div>
+
+        <div class="card-body">
+
+          <div *ngIf="statusMsg" class="alert mb-3"
+               [ngClass]="{'alert-success': statusType==='success', 'alert-danger': statusType==='danger'}">
+            {{ statusMsg }}
+          </div>
+
+          <form [formGroup]="transportistaForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <div class="floating-field">
+                  <input type="text"
+                         class="form-control"
+                         placeholder=" "
+                         formControlName="nombre"
+                         [class.is-invalid]="isInvalid('nombre')">
+                  <label>Nombre completo</label>
+                  <div class="invalid-feedback">El nombre es obligatorio.</div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="floating-field">
+                  <input type="text"
+                         class="form-control"
+                         placeholder=" "
+                         formControlName="vehiculo"
+                         [class.is-invalid]="isInvalid('vehiculo')">
+                  <label>Vehículo</label>
+                  <div class="invalid-feedback">El vehículo es obligatorio.</div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="floating-field">
+                  <input type="text"
+                         class="form-control text-uppercase"
+                         placeholder=" "
+                         formControlName="placa"
+                         maxlength="8"
+                         [class.is-invalid]="isInvalid('placa')">
+                  <label>Placa (ej: ABC123 o ABC-1234)</label>
+                  <div class="invalid-feedback">Usa un formato válido (ABC123 o ABC-1234).</div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="floating-field">
+                  <input type="text"
+                         class="form-control"
+                         placeholder=" "
+                         formControlName="telefono"
+                         maxlength="8"
+                         inputmode="numeric"
+                         [class.is-invalid]="isInvalid('telefono')">
+                  <label>Teléfono (8 dígitos)</label>
+                  <div class="invalid-feedback">Debe tener 8 dígitos.</div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="floating-field">
+                  <input type="number"
+                         class="form-control"
+                         placeholder=" "
+                         formControlName="tarifa"
+                         min="5" max="50" step="0.01"
+                         [class.is-invalid]="isInvalid('tarifa')">
+                  <label>Tarifa por km (Lps.)</label>
+                  <div class="invalid-feedback">Entre 5 y 50 L.</div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-actions d-flex flex-wrap gap-2">
+                  <button type="submit"
+                          class="btn btn-gradient"
+                          [disabled]="transportistaForm.invalid || loading">
+                    <i class="bi bi-check2-circle me-2" *ngIf="!loading"></i>
+                    <span *ngIf="!loading">Registrar Transportista</span>
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    <span *ngIf="loading">Guardando...</span>
+                  </button>
+
+                  <button type="button"
+                          class="btn btn-outline-secondary"
+                          (click)="hardReset()">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i>
+                    Limpiar
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

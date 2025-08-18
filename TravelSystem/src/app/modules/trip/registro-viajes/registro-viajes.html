@@ -1,0 +1,69 @@
+<div class="travel-form-container">
+  <h2>Registro de Viajes</h2>
+  
+  <form [formGroup]="viajeForm" (ngSubmit)="onSubmit()" class="travel-form">
+    <div class="form-group">
+      <label>Fecha del Viaje</label>
+      <input type="date" formControlName="fecha" class="form-control" (change)="checkViajesDelDia()">
+    </div>
+
+    <div class="form-group">
+      <label>Sucursal</label>
+      <select formControlName="sucursal_id" class="form-control" (change)="onSucursalChange()">
+        <option value="">Seleccione una sucursal</option>
+        <option *ngFor="let sucursal of sucursales" [value]="sucursal._id">
+          {{ sucursal.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Transportista</label>
+      <select formControlName="transportista_id" class="form-control">
+        <option value="">Seleccione un transportista</option>
+        <option *ngFor="let transportista of transportistas" [value]="transportista._id">
+          {{ transportista.nombre }} (Tarifa: {{ transportista.tarifa | currency }})
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Colaboradores</label>
+      <div class="colaboradores-list">
+        <div *ngFor="let colaborador of colaboradores" 
+             class="colaborador-item" 
+             [class.disabled]="colaborador.disabled"
+             (click)="!colaborador.disabled && toggleColaborador(colaborador)">
+          <input type="checkbox" 
+                 [checked]="colaborador.selected" 
+                 [disabled]="colaborador.disabled"
+                 (click)="$event.stopPropagation()">
+          <span>{{ colaborador.personal_id.nombres }}</span>
+          <span class="distance">({{ colaborador.distancia_km }} km)</span>
+          <span *ngIf="colaborador.disabled" class="warning">Ya tiene viaje asignado</span>
+        </div>
+      </div>
+    </div>
+
+        <div class="totals">
+        <div>Total KM: <strong>{{ totalKm }}</strong></div>
+        <div>Tarifa: <strong>{{ tarifaSeleccionada | currency:'HNL' }}</strong></div>
+        <div *ngIf="totalKm > 0">Costo estimado: <strong>{{ costoEstimado | currency:'HNL' }}</strong></div>
+        </div>
+
+
+
+    <div class="form-group">
+      <label>Observaciones</label>
+      <textarea formControlName="observaciones" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div *ngIf="totalKm > 100" class="alert alert-danger">
+      El viaje no puede superar los 100 km (Actual: {{ totalKm }} km)
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="viajeForm.invalid || totalKm > 100">
+      Registrar Viaje
+    </button>
+  </form>
+</div>

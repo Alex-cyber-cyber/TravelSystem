@@ -65,6 +65,7 @@ obtenerEmployees(): Observable<any[]> {
   );
 }
 
+
   eliminarAsignacion(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/AsignarSucursales/asignaciones/${id}`)
     .pipe(tap(() => this.asignacionesUpdated.next()),
@@ -73,5 +74,10 @@ obtenerEmployees(): Observable<any[]> {
         return throwError(error);
       })
     );
+  }
+
+  
+  obtenerColaboradoresPorSucursal(sucursalId: string): Observable<any> {
+    return this.http.get(`/api/sucursales/${sucursalId}/colaboradores`);
   }
 }

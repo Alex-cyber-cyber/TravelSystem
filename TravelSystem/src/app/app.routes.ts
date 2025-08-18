@@ -5,6 +5,8 @@ import { authGuard } from './core/guards/auth.guard';
 import { SucursalesForm } from './modules/sucursales/components/sucursales-form/sucursales-form';
 import { EmployeeForm } from './modules/personal/components/employee-form/employee-form';
 import { AsignarSucursales } from './modules/asignar-sucursales/components/asignar-sucursales/asignar-sucursales';
+import { TransportistaFormComponent } from './modules/transportistas/registrar-transportistas/registrar-transportistas';
+import { RegistroViajesComponent } from './modules/trip/registro-viajes/registro-viajes';
 
 export const routes: Routes = [{
     path: 'login',
@@ -20,6 +22,8 @@ export const routes: Routes = [{
   children: [
   {path: 'sucursales', component: SucursalesForm},
   {path: 'employee', component: EmployeeForm},
-  {path: 'asignar-sucursales', component: AsignarSucursales}
+  {path: 'asignar-sucursales', component: AsignarSucursales},
+  {path: 'registrar-transportista', component: TransportistaFormComponent},
+  {path: 'registrar-viajes', component: RegistroViajesComponent}
 ]},
 {path: '**', redirectTo: 'login'}];

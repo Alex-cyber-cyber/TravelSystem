@@ -7,11 +7,12 @@ import { SucursalesForm } from '../sucursales/components/sucursales-form/sucursa
 import { MatDialog } from '@angular/material/dialog';
 import { EmployeeForm } from '../personal/components/employee-form/employee-form';
 import { AsignarSucursales } from '../asignar-sucursales/components/asignar-sucursales/asignar-sucursales';
+import { TransportistaFormComponent } from '../transportistas/registrar-transportistas/registrar-transportistas';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm, EmployeeForm,AsignarSucursales],
   standalone: true,
+  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm, EmployeeForm,AsignarSucursales, TransportistaFormComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -35,7 +36,7 @@ export class Dashboard implements OnInit, OnDestroy {
   employeeMenuOpen = true;
 
   unreadNotifications = 3;
-
+  transportistasMenuOpen = true;
 
 
   
@@ -128,16 +129,22 @@ export class Dashboard implements OnInit, OnDestroy {
   }
   
 
-  toggleSubmenu(menu: string): void {
-    if (menu === 'sucursales') {
-      this.sucursalesMenuOpen = !this.sucursalesMenuOpen;
-    } else if (menu === 'viajes') {
-      this.viajesMenuOpen = !this.viajesMenuOpen;
-    } else if (menu === 'empleados') {
-      this.employeeMenuOpen = !this.employeeMenuOpen;
+toggleSubmenu(menu: string): void {
+    switch(menu) {
+      case 'sucursales':
+        this.sucursalesMenuOpen = !this.sucursalesMenuOpen;
+        break;
+      case 'viajes':
+        this.viajesMenuOpen = !this.viajesMenuOpen;
+        break;
+      case 'empleados':
+        this.employeeMenuOpen = !this.employeeMenuOpen;
+        break;
+      case 'transportistas':
+        this.transportistasMenuOpen = !this.transportistasMenuOpen;
+        break;
     }
   }
-
   setActive(item: string): void {
     this.activeItem = item;
     if (window.innerWidth < 992) {
@@ -218,6 +225,29 @@ export class Dashboard implements OnInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
     this.setActive('asignar-sucursales');
+  }
+  handleRegistrarTransportista(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setActive('registrar-transportista');
+    //this.openTransportistaForm();
+  }
+
+  openTransportistaForm(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const dialogRef = this.dialog.open(TransportistaFormComponent, {
+      width: '600px',
+      disableClose: true,
+      panelClass: this.darkMode ? 'dark-theme' : ''
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('El diálogo de transportista fue cerrado');
+    });
   }
 }
 

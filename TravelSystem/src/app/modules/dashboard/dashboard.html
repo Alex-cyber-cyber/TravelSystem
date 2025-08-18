@@ -105,45 +105,64 @@
             </ul>
           </li>
 
-          <li class="nav-item has-submenu" [class.open]="viajesMenuOpen">
-            <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('viajes')">
-              <i class="bi bi-truck me-3"></i>
-              <span class="menu-text flex-grow-1">Viajes</span>
-              <i class="bi bi-chevron-down submenu-arrow"></i>
-            </div>
-            <ul class="submenu list-unstyled">
-              <li [class.active]="activeItem === 'registrar-viaje'">
-                <a href="#" class="d-block" (click)="setActive('registrar-viaje')">
-                  <span>Registrar Viaje</span>
-                </a>
+              <li class="nav-item has-submenu" [class.open]="viajesMenuOpen">
+                <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('viajes')">
+                  <i class="bi bi-truck me-3"></i>
+                  <span class="menu-text flex-grow-1">Viajes</span>
+                  <i class="bi bi-chevron-down submenu-arrow"></i>
+                </div>
+                <ul class="submenu list-unstyled">
+                  <li [class.active]="activeItem === 'registrar-viaje'">
+                    <a href="#" class="d-block" (click)="setActive('registrar-viaje')">
+                      <span>Registrar Viaje</span>
+                    </a>
+                  </li>
+                  <li [class.active]="activeItem === 'historial-viajes'">
+                    <a href="#" class="d-block" (click)="setActive('historial-viajes')">
+                      <span>Historial</span>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li [class.active]="activeItem === 'historial-viajes'">
-                <a href="#" class="d-block" (click)="setActive('historial-viajes')">
-                  <span>Historial</span>
-                </a>
-              </li>
-            </ul>
+              <li class="nav-item has-submenu" [class.open]="employeeMenuOpen">
+        <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('empleados')">
+          <i class="bi bi-people me-3"></i>
+          <span class="menu-text flex-grow-1">Empleados</span>
+          <i class="bi bi-chevron-down submenu-arrow"></i>
+        </div>
+        <ul class="submenu list-unstyled">
+          <li [class.active]="activeItem === 'registrar-empleado'">
+            <a href="#" class="d-block" (click)="handleRegistrarEmpleado($event)">
+              <span>Registrar Nuevo</span>
+            </a>
           </li>
-          <li class="nav-item has-submenu" [class.open]="employeeMenuOpen">
-    <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('employee')">
-      <i class="bi bi-people me-3"></i>
-      <span class="menu-text flex-grow-1">Empleados</span>
-      <i class="bi bi-chevron-down submenu-arrow"></i>
-    </div>
-    <ul class="submenu list-unstyled">
-      <li [class.active]="activeItem === 'registrar-empleado'">
-        <a href="#" class="d-block" (click)="handleRegistrarEmpleado($event)">
-          <span>Registrar Nuevo</span>
-        </a>
+          <li [class.active]="activeItem === 'gestion-empleados'">
+            <a href="#" class="d-block" (click)="setActive('gestion-empleados')">
+              <span>Gestión de Empleados</span>
+            </a>
+          </li>
+        </ul>
       </li>
-      <li [class.active]="activeItem === 'gestion-empleados'">
-        <a href="#" class="d-block" (click)="setActive('gestion-empleados')">
-          <span>Gestión de Empleados</span>
-        </a>
-      </li>
-    </ul>
-  </li>
 
+        <li class="nav-item has-submenu" [class.open]="transportistasMenuOpen">
+          <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('transportistas')">
+            <i class="bi bi-truck me-3"></i>
+            <span class="menu-text flex-grow-1">Transportistas</span>
+            <i class="bi bi-chevron-down submenu-arrow"></i>
+          </div>
+          <ul class="submenu list-unstyled">
+            <li [class.active]="activeItem === 'registrar-transportista'">
+              <a href="#" class="d-block" (click)="handleRegistrarTransportista($event)">
+                <span>Registrar Transportista</span>
+              </a>
+            </li>
+            <li [class.active]="activeItem === 'gestion-transportistas'">
+              <a href="#" class="d-block" (click)="setActive('gestion-transportistas')">
+                <span>Gestión de Transportistas</span>
+              </a>
+            </li>
+          </ul>
+        </li>
 
           <li class="nav-item" [class.active]="activeItem === 'reportes'">
             <a href="#" class="d-flex align-items-center" (click)="setActive('reportes')">
@@ -190,6 +209,12 @@
       class="h-100"
       [darkMode]="darkMode">
     </app-asignar-sucursales>
+
+    <app-transportista-form
+      *ngIf="activeItem === 'registrar-transportista'"
+      class="h-100"
+      [darkMode]="darkMode">
+    </app-transportista-form>
     </div>
   </main>
 </div>

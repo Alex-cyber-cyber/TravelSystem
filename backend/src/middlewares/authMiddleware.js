@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config');
+const config = require('../../config');
 
 exports.verifyToken = (req, res, next) => {
   const token = req.headers['authorization'];
@@ -24,4 +24,13 @@ exports.isAdmin = (req, res, next) => {
     return res.status(403).json({ error: 'Requiere rol de administrador' });
   }
   next();
+};
+
+exports.checkRole = (role) => {
+  return (req, res, next) => {
+    if (req.userRole !== role) {
+      return res.status(403).json({ error: 'Acceso denegado' });
+    }
+    next();
+  };
 };

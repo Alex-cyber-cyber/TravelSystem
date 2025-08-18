@@ -53,10 +53,10 @@ export class FormularioAsignacion implements OnDestroy {
     },
     distancia_km: {
       required: 'La distancia es requerida',
-      min: 'La distancia mínima es 0.01 km',
+      min: 'La distancia mínima es 1 km',
       max: 'La distancia máxima es 50 km',
       pattern: 'Debe ser un número válido (ej: 5.25)',
-      invalidDistance: 'La distancia debe estar entre 0.01 y 50 km'
+      invalidDistance: 'La distancia debe estar entre 1 y 50 km'
     }
   };
 

@@ -8,6 +8,8 @@ const authRoutes = require('./routes/auth/authRoutes');
 const sucursalRoutes = require('./routes/sucursal/sucursal');
 const EmployeeRoutes = require('./routes/personal/persoonal'); 
 const AsignarSucursales = require('./routes/AsignarSucursales/AsignarSucursales');
+const transportista = require('./routes/transportistas/transportistas');
+const viajes = require('./routes/viajes/viajes');
 
 const app = express();
 
@@ -34,6 +36,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/sucursales', sucursalRoutes);
 app.use('/api/employees', EmployeeRoutes);
 app.use('/api/AsignarSucursales', require('./routes/AsignarSucursales/AsignarSucursales'));
+app.use('/api/transportistas', transportista);
+app.use('/api/viajes', viajes);
+
 
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.path}`);
