@@ -8,6 +8,8 @@ import { AsignarSucursales } from './modules/asignar-sucursales/components/asign
 import { TransportistaFormComponent } from './modules/transportistas/registrar-transportistas/registrar-transportistas';
 import { RegistroViajesComponent } from './modules/trip/registro-viajes/registro-viajes';
 import { ReporteTransportistasComponent } from './pages/reportes/reportes-transportistas/reporte-transportistas';
+import { ViajesHistorialComponent } from './modules/trip/ViajesHistorial/viajes-historial.componente';
+
 
 export const routes: Routes = [{
     path: 'login',
@@ -26,6 +28,7 @@ export const routes: Routes = [{
   {path: 'asignar-sucursales', component: AsignarSucursales},
   {path: 'registrar-transportista', component: TransportistaFormComponent},
   {path: 'registrar-viajes', component: RegistroViajesComponent},
-  {path: 'reportes/transportistas', component: ReporteTransportistasComponent}
+  {path: 'reportes/transportistas', component: ReporteTransportistasComponent},
+  {path: 'historial-viajes', component: ViajesHistorialComponent}
 ]},
 {path: '**', redirectTo: 'login'}];

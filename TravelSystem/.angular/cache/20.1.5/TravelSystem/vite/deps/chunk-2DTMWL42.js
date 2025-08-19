@@ -7,7 +7,7 @@ import {
   Platform,
   coerceElement,
   coerceNumberProperty
-} from "./chunk-LJFN4TR3.js";
+} from "./chunk-IW7I3ULE.js";
 import {
   BidiModule,
   Directionality
@@ -1706,4 +1706,4 @@ export {
   CdkScrollableModule,
   ScrollingModule
 };
-//# sourceMappingURL=chunk-Z47WHKBK.js.map
+//# sourceMappingURL=chunk-2DTMWL42.js.map

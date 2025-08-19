@@ -55,4 +55,4 @@ const sucursal = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('sucursal', sucursal);
+module.exports = mongoose.model('Sucursal', sucursal);

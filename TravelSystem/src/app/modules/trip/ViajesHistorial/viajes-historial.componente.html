@@ -1,0 +1,126 @@
+<div class="card shadow-sm" [class.bg-dark]="darkMode" [class.text-light]="darkMode">
+  <div class="card-header d-flex align-items-center justify-content-between" [class.bg-dark]="darkMode" [class.text-light]="darkMode">
+    <h3 class="h5 mb-0">Historial de Viajes</h3>
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-success btn-sm" (click)="exportarExcel()" [disabled]="!rowsFull.length">
+        <i class="bi bi-file-earmark-excel me-1"></i> Exportar
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="filtros" (ngSubmit)="buscar()" class="row g-3 align-items-end">
+      <div class="col-12 col-md-3">
+        <label class="form-label">Desde</label>
+        <input type="date" class="form-control" formControlName="desde" [class.bg-dark]="darkMode" [class.text-light]="darkMode" [class.border-light]="darkMode">
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">Hasta</label>
+        <input type="date" class="form-control" formControlName="hasta" [class.bg-dark]="darkMode" [class.text-light]="darkMode" [class.border-light]="darkMode">
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">Sucursal</label>
+        <ng-select
+          [items]="sucursales"
+          bindLabel="name"
+          bindValue="_id"
+          formControlName="sucursal_id"
+          [clearable]="true"
+          placeholder="Todas"
+          [class.ng-dark]="darkMode">
+        </ng-select>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">Transportista</label>
+        <ng-select
+          [items]="transportistas"
+          bindLabel="nombre"
+          bindValue="_id"
+          formControlName="transportista_id"
+          [clearable]="true"
+          placeholder="Todos"
+          [class.ng-dark]="darkMode">
+        </ng-select>
+      </div>
+
+      <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="loading">
+          <span *ngIf="!loading"><i class="bi bi-search me-1"></i> Buscar</span>
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        </button>
+
+        <button type="button" class="btn btn-outline-secondary" (click)="clear()" [disabled]="loading">
+          Limpiar
+        </button>
+
+        <div class="ms-auto d-flex align-items-center gap-2">
+          <label class="form-label mb-0">Mostrar</label>
+          <select class="form-select form-select-sm w-auto" [value]="limit" (change)="onLimitChange($event)">
+            <option [value]="10">10</option>
+            <option [value]="20">20</option>
+            <option [value]="50">50</option>
+            <option [value]="100">100</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
+    <div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div>
+
+    <div class="table-responsive border rounded-3 mt-3" [class.border-light]="darkMode">
+      <table class="table align-middle mb-0" [class.table-dark]="darkMode">
+        <thead class="table-light" [class.table-dark]="darkMode">
+          <tr>
+            <th>Fecha</th>
+            <th>Sucursal</th>
+            <th>Transportista</th>
+            <th>Colaboradores</th>
+            <th>Registrado por</th>
+            <th class="text-end">KM</th>
+            <th class="text-end">Tarifa x KM</th>
+            <th class="text-end">Monto</th>
+            <th>Observaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of rows; trackBy: trackRow">
+            <td>{{ v.fecha | date:'dd/MM/yyyy':'UTC' }}</td>
+            <td>{{ nombreSucursal(v) }}</td>
+            <td>{{ nombreTransportista(v) }}</td>
+            <td>{{ nombresColaboradores(v) }}</td>
+            <td>{{ nombreRegistrador(v) }}</td>
+            <td class="text-end">{{ v.total_km }}</td>
+            <td class="text-end">{{ (v.tarifa_por_km ?? v.tarifa_total ?? 0) | currency:'HNL' }}</td>
+            <td class="text-end fw-semibold">{{ montoViaje(v) | currency:'HNL' }}</td>
+            <td>{{ v.observaciones || '—' }}</td>
+          </tr>
+          <tr *ngIf="!rows.length && !loading">
+            <td colspan="9" class="text-center text-muted py-4">Sin resultados</td>
+          </tr>
+          <tr *ngIf="loading">
+            <td colspan="9" class="text-center py-4">
+              <span class="spinner-border spinner-border-sm me-2"></span>Cargando…
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between mt-3">
+      <div class="small text-muted">
+        Mostrando {{ pageStart }}–{{ pageEnd }} de {{ total }}
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm" (click)="changePage(-1)" [disabled]="page <= 1">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" (click)="changePage(1)" [disabled]="page * limit >= total">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

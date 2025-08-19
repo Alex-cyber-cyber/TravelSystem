@@ -105,25 +105,28 @@
             </ul>
           </li>
 
-              <li class="nav-item has-submenu" [class.open]="viajesMenuOpen">
-                <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('viajes')">
-                  <i class="bi bi-truck me-3"></i>
-                  <span class="menu-text flex-grow-1">Viajes</span>
-                  <i class="bi bi-chevron-down submenu-arrow"></i>
-                </div>
-                <ul class="submenu list-unstyled">
-                  <li [class.active]="activeItem === 'registrar-viaje'">
-                    <a href="#" class="d-block" (click)="handleRegistrarViaje($event)">
-                      <span>Registrar Viaje</span>
-                    </a>
-                  </li>
-                  <li [class.active]="activeItem === 'historial-viajes'">
-                    <a href="#" class="d-block" (click)="setActive('historial-viajes')">
-                      <span>Historial</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+            <li class="nav-item has-submenu" [class.open]="viajesMenuOpen">
+              <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('viajes')">
+                <i class="bi bi-truck me-3"></i>
+                <span class="menu-text flex-grow-1">Viajes</span>
+                <i class="bi bi-chevron-down submenu-arrow"></i>
+              </div>
+
+              <ul class="submenu list-unstyled">
+                <li [class.active]="activeItem === 'registrar-viaje'">
+                  <a href="#" class="d-block" (click)="handleRegistrarViaje($event)">
+                    <span>Registrar Viaje</span>
+                  </a>
+                </li>
+
+                <li [class.active]="activeItem === 'historial-viajes'">
+                  <a href="#" class="d-block" (click)="handleHistorialViajes($event)">
+                    <span>Historial</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
               <li class="nav-item has-submenu" [class.open]="employeeMenuOpen">
         <div class="menu-heading d-flex align-items-center" (click)="toggleSubmenu('empleados')">
           <i class="bi bi-people me-3"></i>
@@ -221,6 +224,14 @@
       *ngIf="activeItem === 'reporte-transportistas'"
       class="h-100">
     </app-reporte-transportistas>
+
+
+    <app-viajes-historial
+      *ngIf="activeItem === 'historial-viajes'"
+      [darkMode]="darkMode">
+    </app-viajes-historial>
+
+
 
     </div>
   </main>

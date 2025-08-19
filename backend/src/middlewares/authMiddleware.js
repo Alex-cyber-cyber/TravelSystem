@@ -25,12 +25,10 @@ exports.verifyToken = (req, res, next) => {
 };
 
 exports.requireTripPermission = (req, res, next) => {
-  const role = req.userRole || '';
-  const dept = req.userDept || '';
-
-  const isAdmin = role === 'admin';
-  const isGerenteTienda = role === 'gerente' && dept === 'tienda';
-
+  const role = (req.userRole || '').toLowerCase();
+  const dept = (req.userDept || '').toLowerCase();
+  const isAdmin = role.includes('admin');
+  const isGerenteTienda = role.includes('gerente') && (dept.includes('tienda') || role.includes('tienda'));
   if (isAdmin || isGerenteTienda) return next();
   return res.status(403).json({ error: 'Acceso denegado (solo Gerente de tienda o Admin)' });
 };

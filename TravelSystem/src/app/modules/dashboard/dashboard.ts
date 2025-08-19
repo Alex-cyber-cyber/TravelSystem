@@ -10,12 +10,14 @@ import { AsignarSucursales } from '../asignar-sucursales/components/asignar-sucu
 import { TransportistaFormComponent } from '../transportistas/registrar-transportistas/registrar-transportistas';
 import { RegistroViajesComponent } from '../trip/registro-viajes/registro-viajes';
 import { ReporteTransportistasComponent } from '../../pages/reportes/reportes-transportistas/reporte-transportistas';
-
+import { ViajesHistorialComponent } from '../trip/ViajesHistorial/viajes-historial.componente';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm, EmployeeForm,AsignarSucursales, TransportistaFormComponent, RegistroViajesComponent, ReporteTransportistasComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm, 
+    EmployeeForm,AsignarSucursales, TransportistaFormComponent, 
+    RegistroViajesComponent, ReporteTransportistasComponent, ViajesHistorialComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -280,6 +282,11 @@ toggleSubmenu(menu: string): void {
   this.setActive('registrar-viaje');
   }
 
+  handleHistorialViajes(event: Event): void {
+  event.preventDefault();
+  event.stopPropagation();
+  this.setActive('historial-viajes');
+}
 }
 
 

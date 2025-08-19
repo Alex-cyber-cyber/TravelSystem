@@ -1,0 +1,86 @@
+@use '../../../../styles/variables.scss' as vars;
+@use '../../../../styles/mixins.scss' as mix;
+
+.report-card {
+  border: 1px solid vars.$border-color;
+  border-radius: vars.$border-radius-lg;
+  overflow: hidden;
+  .card-header {
+    background: vars.$gradient-primary;
+    color: vars.$text-light;
+    padding: .8rem 1rem;
+    .btn-outline-light { border-color: rgba(255,255,255,.35); color: vars.$text-light; &:hover{ background: rgba(255,255,255,.1); } }
+  }
+  .card-body { padding: 1rem 1.25rem; }
+}
+
+.filters {
+  .form-label { font-weight: 600; color: vars.$gray-700; }
+  .form-control {
+    background: vars.$white;
+    color: vars.$dark;
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$border-radius;
+    &:focus { border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.15); }
+  }
+  .btn-gradient { @include mix.gradient-button(vars.$gradient-primary); }
+}
+
+.ngs-select {
+  .ng-select-container {
+    min-height: 2.75rem;
+    background: vars.$white;
+    color: vars.$dark;
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$border-radius;
+  }
+  &.ng-select-focused .ng-select-container { border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.15); }
+  .ng-dropdown-panel {
+    background: vars.$white;
+    color: vars.$dark;
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$border-radius;
+    box-shadow: vars.$shadow;
+    .ng-option.ng-option-marked { background: rgba(vars.$primary,.08); color: vars.$primary; }
+    .ng-option.ng-option-selected { background: rgba(vars.$primary,.12); color: vars.$primary; }
+  }
+}
+
+.table-head { background: rgba(67,97,238,.06); th { white-space: nowrap; } }
+.table { td,th { border-color: vars.$border-color; } }
+
+:host-context(.dark-theme) {
+  .report-card {
+    background: vars.$darken;
+    border-color: rgba(255,255,255,.18);
+    .card-header { background: vars.$gradient-dark; color: vars.$text-light; }
+  }
+  .filters {
+    .form-label { color: rgba(255,255,255,.9); }
+    .form-control {
+      background: rgba(255,255,255,.08);
+      color: vars.$text-light;
+      border: 1px solid rgba(255,255,255,.24);
+      &::placeholder { color: rgba(255,255,255,.65); }
+      &:focus { border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.28); }
+    }
+  }
+  .ngs-select {
+    .ng-select-container {
+      background: rgba(255,255,255,.08);
+      color: vars.$text-light;
+      border: 1px solid rgba(255,255,255,.24);
+    }
+    &.ng-select-focused .ng-select-container { border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.35); }
+    .ng-dropdown-panel {
+      background: #222528;
+      color: vars.$text-light;
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow: 0 .75rem 2rem rgba(0,0,0,.55);
+      .ng-option.ng-option-marked { background: rgba(vars.$primary,.28); color: vars.$text-light; }
+      .ng-option.ng-option-selected { background: rgba(vars.$primary,.36); color: vars.$text-light; }
+    }
+  }
+  .table-head { background: rgba(255,255,255,.06); th { color: vars.$text-light; } }
+  .table { color: vars.$text-light; td,th { border-color: rgba(255,255,255,.22); } }
+}

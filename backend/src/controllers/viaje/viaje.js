@@ -2,15 +2,18 @@ const Viaje = require('../../models/viaje/viaje');
 const AsignarSucursales = require('../../models/AsignarSucursales/AsignarSucursales');
 const Transportistas = require('../../models/transportistas/transportistas');
 
+function rangeUTC(iso) {
+  const d = new Date(iso);
+  const start = new Date(d); start.setUTCHours(0,0,0,0);
+  const end = new Date(d);   end.setUTCHours(23,59,59,999);
+  return { start, end };
+}
+
 async function getViajesPorFecha(req, res) {
   try {
     const { fecha } = req.query;
     if (!fecha) return res.json([]);
-
-    const start = new Date(fecha);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(fecha);
-    end.setHours(23, 59, 59, 999);
+    const { start, end } = rangeUTC(fecha);
 
     const viajes = await Viaje.find({ fecha: { $gte: start, $lte: end } })
       .select('colaboradores')
@@ -26,21 +29,16 @@ async function getViajesPorFecha(req, res) {
 async function crearViaje(req, res) {
   try {
     const { fecha, sucursal_id, transportista_id, colaboradores = [], observaciones } = req.body;
-
     if (!fecha || !sucursal_id || !transportista_id || !colaboradores.length) {
       return res.status(400).json({ error: 'Datos incompletos' });
     }
 
-    const start = new Date(fecha);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(fecha);
-    end.setHours(23, 59, 59, 999);
+    const { start, end } = rangeUTC(fecha);
 
     const conflict = await Viaje.findOne({
       fecha: { $gte: start, $lte: end },
       colaboradores: { $in: colaboradores }
     }).lean();
-
     if (conflict) {
       return res.status(409).json({ error: 'Uno o más colaboradores ya tienen viaje en esa fecha' });
     }
@@ -70,7 +68,7 @@ async function crearViaje(req, res) {
       transportista_id,
       colaboradores,
       observaciones,
-      registrado_por: req.userId,   
+      registrado_por: req.userId,
       total_km,
       tarifa_total
     });
