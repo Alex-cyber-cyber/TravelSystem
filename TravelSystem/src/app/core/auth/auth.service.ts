@@ -12,6 +12,7 @@ interface User {
   nombres: string;
   correo: string;
   role: string; 
+  departamento?: string;
 }
 
 interface DecodedToken {
@@ -87,15 +88,11 @@ export class AuthService {
   }
 
   fetchUserData(): Observable<User> {
+    const token = localStorage.getItem('token');
     return this.http.get<User>(`${this.apiUrl}/me`).pipe(
-      tap(user => {
-        const token = localStorage.getItem('token');
-        if (token) {
-          this.storeAuthData(token, user);
-        }
-      }),
+      tap(user => { if (token) this.storeAuthData(token, user); }),
       catchError(error => {
-        this.logout();
+        if (error.status === 401) this.logout();
         return throwError(() => error);
       })
     );
@@ -165,4 +162,11 @@ export class AuthService {
       return null;
     }
   }
+
+  hasTripPermission(user: Partial<User> | null, decoded?: any): boolean {
+  const role = (user?.role ?? decoded?.role ?? '').toString().toLowerCase();
+  const dept = (user?.departamento ?? decoded?.departamento ?? '').toString().toLowerCase();
+  return role === 'admin' || (role === 'gerente' && dept === 'tienda');
+}
+
 }

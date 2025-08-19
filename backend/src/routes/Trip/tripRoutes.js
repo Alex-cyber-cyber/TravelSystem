@@ -1,8 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const { createTrip, getTrips } = require('../../controllers/Trip/tripController');
+import { Router } from 'express';
+import { getViajesPorFecha, crearViaje } from '../../controllers/viaje/viajes.controller';
+import { authMiddleware } from '../../middlewares/auth';
 
-router.post('/', createTrip);
-router.get('/', getTrips);
+const router = Router();
 
-module.exports = router;
+router.get('/', authMiddleware, getViajesPorFecha);
+router.post('/', authMiddleware, crearViaje);
+
+export default router;
+

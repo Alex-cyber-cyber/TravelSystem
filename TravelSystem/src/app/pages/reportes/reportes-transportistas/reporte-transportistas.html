@@ -1,0 +1,102 @@
+<div class="card report-card shadow-sm">
+  <div class="card-header d-flex align-items-center justify-content-between">
+    <h3 class="h5 mb-0">Reporte: Pagos a Transportistas</h3>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-light btn-sm" (click)="limpiar()" [disabled]="loading">
+        Limpiar
+      </button>
+      <button type="button" class="btn btn-light btn-sm" (click)="exportarExcel()" [disabled]="loading || !detalle?.length">
+        <i class="bi bi-file-earmark-excel me-1"></i> Exportar Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="filtros" (ngSubmit)="buscar()" class="row g-3 filters">
+      <div class="col-12 col-md-3">
+        <label class="form-label fw-semibold">Desde</label>
+        <input type="date" class="form-control" formControlName="desde">
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label fw-semibold">Hasta</label>
+        <input type="date" class="form-control" formControlName="hasta">
+      </div>
+
+      <div class="col-12 col-md-4">
+        <label class="form-label fw-semibold">Transportista (opcional)</label>
+        <ng-select
+          class="ngs-select"
+          [items]="transportistas"
+          bindLabel="nombre"
+          bindValue="_id"
+          formControlName="transportista_id"
+          [clearable]="true"
+          placeholder="Todos">
+        </ng-select>
+      </div>
+
+      <div class="col-12 col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-gradient w-100" [disabled]="loading">
+          <span *ngIf="!loading"><i class="bi bi-search me-1"></i> Buscar</span>
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div>
+
+    <div class="row gy-3 mt-3" *ngIf="detalle.length">
+      <div class="col-12 col-lg-4">
+        <div class="summary p-3 border rounded-3">
+          <div class="d-flex justify-content-between">
+            <span>Total de viajes</span>
+            <strong>{{ resumen.total_viajes }}</strong>
+          </div>
+          <div class="d-flex justify-content-between mt-1">
+            <span>Total KM</span>
+            <strong>{{ resumen.total_km }}</strong>
+          </div>
+          <div class="d-flex justify-content-between mt-1">
+            <span>Total a pagar</span>
+            <strong>{{ resumen.total_pagar | currency:'HNL' }}</strong>
+          </div>
+          <div class="mt-2 text-muted small">* El monto usa tarifa x km del viaje (o la tarifa actual del transportista si no quedó guardada).</div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="table-responsive border rounded-3 overflow-hidden">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-head">
+              <tr>
+                <th>Fecha</th>
+                <th>Transportista</th>
+                <th>Sucursal</th>
+                <th>Colabs</th>
+                <th class="text-end">KM</th>
+                <th class="text-end">Tarifa x KM</th>
+                <th class="text-end">Monto viaje</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of detalle">
+                <td>{{ v.fecha | date:'dd/MM/yyyy' }}</td>
+                <td>{{ v.transportista?.nombre }}</td>
+                <td>{{ v.sucursal?.name || '—' }}</td>
+                <td>{{ v.colaboradores_count }}</td>
+                <td class="text-end">{{ v.total_km }}</td>
+                <td class="text-end">{{ v.tarifa_por_km | currency:'HNL' }}</td>
+                <td class="text-end fw-semibold">{{ v.monto_viaje | currency:'HNL' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!detalle.length && !loading" class="text-muted mt-3">
+      No hay viajes en el rango de fechas seleccionado.
+    </div>
+  </div>
+</div>

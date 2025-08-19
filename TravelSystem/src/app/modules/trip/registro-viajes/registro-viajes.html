@@ -1,69 +1,175 @@
-<div class="travel-form-container">
-  <h2>Registro de Viajes</h2>
-  
-  <form [formGroup]="viajeForm" (ngSubmit)="onSubmit()" class="travel-form">
-    <div class="form-group">
-      <label>Fecha del Viaje</label>
-      <input type="date" formControlName="fecha" class="form-control" (change)="checkViajesDelDia()">
-    </div>
+<div class="container-fluid viajes-form" *ngIf="userReady; else loadingUser">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xxl-9">
+      <div class="card travel-card shadow-sm">
 
-    <div class="form-group">
-      <label>Sucursal</label>
-      <select formControlName="sucursal_id" class="form-control" (change)="onSucursalChange()">
-        <option value="">Seleccione una sucursal</option>
-        <option *ngFor="let sucursal of sucursales" [value]="sucursal._id">
-          {{ sucursal.name }}
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Transportista</label>
-      <select formControlName="transportista_id" class="form-control">
-        <option value="">Seleccione un transportista</option>
-        <option *ngFor="let transportista of transportistas" [value]="transportista._id">
-          {{ transportista.nombre }} (Tarifa: {{ transportista.tarifa | currency }})
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Colaboradores</label>
-      <div class="colaboradores-list">
-        <div *ngFor="let colaborador of colaboradores" 
-             class="colaborador-item" 
-             [class.disabled]="colaborador.disabled"
-             (click)="!colaborador.disabled && toggleColaborador(colaborador)">
-          <input type="checkbox" 
-                 [checked]="colaborador.selected" 
-                 [disabled]="colaborador.disabled"
-                 (click)="$event.stopPropagation()">
-          <span>{{ colaborador.personal_id.nombres }}</span>
-          <span class="distance">({{ colaborador.distancia_km }} km)</span>
-          <span *ngIf="colaborador.disabled" class="warning">Ya tiene viaje asignado</span>
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-geo-alt-fill fs-4"></i>
+            <h2 class="h4 mb-0">Registro de Viajes</h2>
+          </div>
+          <span class="badge bg-primary-subtle text-primary-emphasis">Nuevo</span>
         </div>
+
+        <div class="card-body">
+          <div *ngIf="!canRegistrar" class="alert alert-danger mb-3" role="alert">
+            No tiene permisos (solo Gerente de tienda o Admin).
+          </div>
+
+          <div *ngIf="statusMsg" class="alert mb-3"
+               [ngClass]="{'alert-success': statusType==='success', 'alert-danger': statusType==='danger'}"
+               role="alert" aria-live="assertive">
+            {{ statusMsg }}
+          </div>
+
+          <form [formGroup]="viajeForm" (ngSubmit)="onSubmit()" class="travel-form" novalidate>
+            <div class="row g-3">
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-semibold">Fecha del Viaje</label>
+                <input type="date" class="form-control"
+                       formControlName="fecha"
+                       [class.is-invalid]="isInvalid('fecha')">
+                <div class="invalid-feedback">Seleccione una fecha válida.</div>
+              </div>
+
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-semibold">Sucursal</label>
+                <select class="form-select"
+                        formControlName="sucursal_id"
+                        [class.is-invalid]="isInvalid('sucursal_id')">
+                  <option value="">Seleccione una sucursal</option>
+                  <option *ngFor="let s of sucursales" [value]="s._id">{{ s.name }}</option>
+                </select>
+                <div class="invalid-feedback">Debe seleccionar una sucursal.</div>
+              </div>
+
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-semibold">Transportista</label>
+                <select class="form-select"
+                        formControlName="transportista_id"
+                        [class.is-invalid]="isInvalid('transportista_id')">
+                  <option value="">Seleccione un transportista</option>
+                  <option *ngFor="let t of transportistas" [value]="t._id">
+                    {{ t.nombre }} (Tarifa: {{ t.tarifa | currency:'HNL' }})
+                  </option>
+                </select>
+                <div class="invalid-feedback">Debe seleccionar un transportista.</div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold mb-2">Colaboradores</label>
+
+                <ng-select
+                  class="ngs-collab"
+                  formControlName="colaboradores"
+                  [items]="colaboradoresOptions"
+                  bindLabel="label"
+                  bindValue="id"
+                  [multiple]="true"
+                  [closeOnSelect]="false"
+                  [searchable]="true"
+                  [clearable]="true"
+                  [dropdownPosition]="'bottom'"
+                  placeholder="Selecciona uno o varios colaboradores">
+
+                  <ng-template ng-option-tmp let-item="item">
+                    <div class="opt-line" [class.opt-disabled]="item.disabled">
+                      <div class="avatar">{{ item.label?.charAt(0) || '•' }}</div>
+                      <div class="meta">
+                        <div class="title">{{ item.label }}</div>
+                        <div class="sub">Distancia: {{ item.distancia_km }} km</div>
+                      </div>
+                      <span class="chip ms-auto" *ngIf="!item.disabled; else disabledT">Disponible</span>
+                      <ng-template #disabledT>
+                        <span class="chip chip-danger ms-auto">Ocupado hoy</span>
+                      </ng-template>
+                    </div>
+                  </ng-template>
+
+                  <ng-template ng-multi-label-tmp let-items="items">
+                    <span class="badge bg-primary-subtle text-primary-emphasis me-1" *ngFor="let it of items">
+                      {{ it.label }}
+                    </span>
+                  </ng-template>
+
+                  <ng-template ng-notfound-tmp>
+                    <div class="not-found">No hay colaboradores para esta sucursal.</div>
+                  </ng-template>
+                </ng-select>
+
+                <div class="text-danger small mt-1"
+                     *ngIf="viajeForm.get('colaboradores')?.hasError('required') && (viajeForm.get('colaboradores')?.touched || viajeForm.get('colaboradores')?.dirty)">
+                  Debe seleccionar al menos un colaborador.
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between">
+                  <label class="form-label fw-semibold mb-2">Observaciones</label>
+                  <small class="text-muted">{{ (viajeForm.get('observaciones')?.value || '').length }}/500</small>
+                </div>
+                <textarea class="form-control" rows="3" maxlength="500"
+                          formControlName="observaciones"
+                          placeholder="Notas adicionales…"></textarea>
+              </div>
+
+              <div class="col-12" *ngIf="totalKm > 100">
+                <div class="alert alert-danger mb-0">
+                  La suma de distancias no puede superar los 100 km. (Actual: {{ totalKm }} km)
+                </div>
+              </div>
+            </div>
+
+            <div class="summary-bar mt-4">
+              <div class="summary-item">
+                <span class="label">Total KM</span>
+                <span class="value">{{ totalKm }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="label">Tarifa</span>
+                <span class="value">{{ tarifaSeleccionada | currency:'HNL' }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="label">Costo estimado</span>
+                <span class="value">{{ (totalKm > 0 ? costoEstimado : 0) | currency:'HNL' }}</span>
+              </div>
+
+              <div class="actions ms-auto">
+                <button type="button" class="btn btn-outline-secondary me-2" (click)="resetForm()">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+                </button>
+                <button type="submit"
+                        class="btn btn-gradient"
+                        [disabled]="submitDisabled"
+                        [title]="submitDisabled ? submitDisabledReasons.join(' • ') : ''">
+                  <ng-container *ngIf="!loading">
+                    <i class="bi bi-save me-1"></i> Registrar Viaje
+                  </ng-container>
+                  <ng-container *ngIf="loading">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Guardando…
+                  </ng-container>
+                </button>
+              </div>
+
+              <div *ngIf="submitDisabled && submitDisabledReasons.length"
+                   class="why-disabled small text-danger w-100 mt-2">
+                No puedes registrar aún:
+                <ul class="mb-0 ps-3">
+                  <li *ngFor="let r of submitDisabledReasons">{{ r }}</li>
+                </ul>
+              </div>
+            </div>
+          </form>
+        </div>
+
       </div>
     </div>
-
-        <div class="totals">
-        <div>Total KM: <strong>{{ totalKm }}</strong></div>
-        <div>Tarifa: <strong>{{ tarifaSeleccionada | currency:'HNL' }}</strong></div>
-        <div *ngIf="totalKm > 0">Costo estimado: <strong>{{ costoEstimado | currency:'HNL' }}</strong></div>
-        </div>
-
-
-
-    <div class="form-group">
-      <label>Observaciones</label>
-      <textarea formControlName="observaciones" class="form-control" rows="3"></textarea>
-    </div>
-
-    <div *ngIf="totalKm > 100" class="alert alert-danger">
-      El viaje no puede superar los 100 km (Actual: {{ totalKm }} km)
-    </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="viajeForm.invalid || totalKm > 100">
-      Registrar Viaje
-    </button>
-  </form>
+  </div>
 </div>
+
+<ng-template #loadingUser>
+  <div class="d-flex justify-content-center py-5">
+    <div class="spinner-border" role="status" aria-label="Cargando usuario..."></div>
+  </div>
+</ng-template>

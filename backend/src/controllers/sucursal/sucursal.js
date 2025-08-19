@@ -1,4 +1,5 @@
 const sucursal = require('../../models/sucursal/sucursal');
+
 exports.createSucursal = async (req, res) => {
     try {
         const { name, code, address, city, phone, state, email, manager } = req.body;

@@ -8,11 +8,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { EmployeeForm } from '../personal/components/employee-form/employee-form';
 import { AsignarSucursales } from '../asignar-sucursales/components/asignar-sucursales/asignar-sucursales';
 import { TransportistaFormComponent } from '../transportistas/registrar-transportistas/registrar-transportistas';
+import { RegistroViajesComponent } from '../trip/registro-viajes/registro-viajes';
+import { ReporteTransportistasComponent } from '../../pages/reportes/reportes-transportistas/reporte-transportistas';
+
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm, EmployeeForm,AsignarSucursales, TransportistaFormComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet,SucursalesForm, EmployeeForm,AsignarSucursales, TransportistaFormComponent, RegistroViajesComponent, ReporteTransportistasComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -232,6 +235,28 @@ toggleSubmenu(menu: string): void {
     this.setActive('registrar-transportista');
     //this.openTransportistaForm();
   }
+    handleReporteTransportista(event: Event): void {
+      event.preventDefault();
+      event.stopPropagation();
+      this.setActive('reporte-transportistas'); 
+    }
+
+  openReporteTransportistaForm(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ReporteTransportistasComponent, {
+      width: '600px',
+      disableClose: true,
+      panelClass: this.darkMode ? 'dark-theme' : ''
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('El diálogo de reporte de transportista fue cerrado');
+    });
+  }
 
   openTransportistaForm(): void {
     if (!this.authService.isAuthenticated()) {
@@ -249,6 +274,12 @@ toggleSubmenu(menu: string): void {
       console.log('El diálogo de transportista fue cerrado');
     });
   }
+  handleRegistrarViaje(event: Event): void {
+  event.preventDefault();
+  event.stopPropagation();
+  this.setActive('registrar-viaje');
+  }
+
 }
 
 

@@ -1,0 +1,199 @@
+@use '../../../../styles/variables.scss' as vars;
+@use '../../../../styles/mixins.scss' as mix;
+
+.report-card {
+  border: 1px solid vars.$border-color;
+  border-radius: vars.$border-radius-lg;
+  overflow: hidden;
+  .card-header {
+    background: vars.$gradient-primary;
+    color: vars.$text-light;
+    padding: .85rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .btn {
+      border-color: rgba(255,255,255,.35);
+      color: vars.$text-light;
+      &:hover { background: rgba(255,255,255,.12); }
+    }
+    .btn-light {
+      background: vars.$white;
+      color: vars.$primary;
+      border-color: transparent;
+      &:hover { filter: brightness(.96); }
+    }
+  }
+  .card-body { padding: 1.25rem; }
+  .card-footer { background: transparent; padding: .85rem 1rem; }
+}
+
+.filters {
+  .form-label { color: vars.$gray-700; }
+  .form-control {
+    background: vars.$white;
+    color: vars.$dark;
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$border-radius;
+    transition: vars.$transition-base;
+    &:focus { background: vars.$white; border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.15); }
+  }
+  .btn-gradient { @include mix.gradient-button(vars.$gradient-primary); }
+}
+
+.ngs-select {
+  .ng-select-container {
+    min-height: 2.75rem;
+    background: vars.$white;
+    color: vars.$dark;
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$border-radius;
+    transition: vars.$transition-base;
+    .ng-value-container {
+      padding: .25rem .5rem;
+      .ng-input>input {
+        color: vars.$dark;
+        &::placeholder { color: vars.$gray-700; opacity: .6; }
+      }
+      .ng-value {
+        background: rgba(vars.$primary,.08);
+        border: 1px solid rgba(vars.$primary,.25);
+        color: vars.$primary;
+        border-radius: 999px;
+        padding: .1rem .5rem;
+        margin: .15rem;
+      }
+      .ng-clear-wrapper { color: vars.$gray-700; }
+      .ng-arrow-wrapper .ng-arrow { border-top-color: vars.$gray-700; }
+    }
+  }
+  &:hover .ng-select-container { border-color: vars.$primary; }
+  &.ng-select-focused .ng-select-container { border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.15); }
+
+  .ng-dropdown-panel {
+    background: vars.$white;
+    color: vars.$dark;
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$border-radius;
+    box-shadow: vars.$shadow;
+    overflow: hidden;
+    .ng-dropdown-header { padding: .5rem .75rem; border-bottom: 1px solid vars.$border-color; background: vars.$gray-100; }
+    .ng-option {
+      padding: .55rem .75rem;
+      color: vars.$dark;
+      transition: vars.$transition-base;
+      &.ng-option-marked { background: rgba(vars.$primary,.08); color: vars.$primary; }
+      &.ng-option-selected { background: rgba(vars.$primary,.12); color: vars.$primary; font-weight: 600; }
+      &.ng-option-disabled { color: vars.$gray-700; opacity: .65; }
+    }
+    .ng-optgroup { padding: .45rem .75rem; font-weight: 600; color: vars.$gray-700; background: rgba(0,0,0,.03); }
+    .scroll-host::-webkit-scrollbar { width: 8px; height: 8px; }
+    .scroll-host::-webkit-scrollbar-thumb { background: rgba(0,0,0,.2); border-radius: 8px; }
+    .scroll-host::-webkit-scrollbar-track { background: transparent; }
+  }
+}
+
+.summary {
+  background: #fafbfc;
+  border-color: vars.$border-color !important;
+  border-radius: vars.$border-radius-lg;
+  .text-muted { color: vars.$gray-700 !important; }
+}
+
+.table-head {
+  background: rgba(67,97,238,.06);
+  th { white-space: nowrap; font-weight: 600; }
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: rgba(67,97,238,.06);
+  color: vars.$dark;
+  td, th { border-color: vars.$border-color; }
+  tbody tr:hover { background: var(--bs-table-hover-bg); }
+}
+
+:host-context(.dark-theme) {
+  .report-card {
+    background: vars.$darken;
+    border-color: rgba(255,255,255,.18);
+    .card-header { background: vars.$gradient-dark; color: vars.$text-light; }
+    .card-body { color: vars.$text-light; }
+    .card-footer { border-top: 1px solid rgba(255,255,255,.12); }
+  }
+
+  .filters {
+    .form-label { color: rgba(255,255,255,.85); }
+    .form-control {
+      background: rgba(255,255,255,.08);
+      color: vars.$text-light;
+      border-color: rgba(255,255,255,.24);
+      &::placeholder { color: rgba(255,255,255,.65); }
+      &:focus { background: rgba(255,255,255,.1); border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.28); }
+    }
+  }
+
+  .ngs-select {
+    .ng-select-container {
+      background: rgba(255,255,255,.08);
+      color: vars.$text-light;
+      border: 1px solid rgba(255,255,255,.24);
+      .ng-value-container {
+        .ng-input>input {
+          color: vars.$text-light;
+          &::placeholder { color: rgba(255,255,255,.65); }
+        }
+        .ng-value {
+          background: rgba(vars.$primary,.22);
+          border: 1px solid rgba(vars.$primary,.4);
+          color: vars.$text-light;
+        }
+        .ng-clear-wrapper { color: rgba(255,255,255,.8); }
+        .ng-arrow-wrapper .ng-arrow { border-top-color: rgba(255,255,255,.8); }
+      }
+    }
+    &:hover .ng-select-container { border-color: rgba(255,255,255,.38); }
+    &.ng-select-focused .ng-select-container { border-color: vars.$primary; box-shadow: 0 0 0 .2rem rgba(67,97,238,.35); }
+
+    .ng-dropdown-panel {
+      background: #222528;
+      color: vars.$text-light;
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow: 0 .75rem 2rem rgba(0,0,0,.55);
+      .ng-dropdown-header { background: rgba(255,255,255,.06); border-bottom-color: rgba(255,255,255,.15); color: vars.$text-light; }
+      .ng-option {
+        color: vars.$text-light;
+        &.ng-option-marked { background: rgba(vars.$primary,.28); color: vars.$text-light; }
+        &.ng-option-selected { background: rgba(vars.$primary,.36); color: vars.$text-light; }
+        &.ng-option-disabled { color: rgba(255,255,255,.55); }
+      }
+      .ng-optgroup { background: rgba(255,255,255,.06); color: rgba(255,255,255,.9); }
+      .scroll-host::-webkit-scrollbar-thumb { background: rgba(255,255,255,.28); }
+    }
+  }
+
+  .summary {
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.18) !important;
+    color: vars.$text-light;
+    .text-muted { color: rgba(255,255,255,.75) !important; }
+  }
+
+  .table-head { background: rgba(255,255,255,.06); th { color: vars.$text-light; } }
+
+  .table {
+    color: vars.$text-light;
+    --bs-table-hover-bg: rgba(255,255,255,.06);
+    td, th { border-color: rgba(255,255,255,.22); }
+    tbody tr:hover { background: var(--bs-table-hover-bg); }
+  }
+  td{
+    color: vars.$text-light;
+  }
+
+  .btn-outline-secondary {
+    color: vars.$text-light;
+    border-color: rgba(255,255,255,.35);
+    &:hover { background: rgba(255,255,255,.08); }
+  }
+}

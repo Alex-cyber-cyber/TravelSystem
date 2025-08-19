@@ -7,6 +7,7 @@ import { EmployeeForm } from './modules/personal/components/employee-form/employ
 import { AsignarSucursales } from './modules/asignar-sucursales/components/asignar-sucursales/asignar-sucursales';
 import { TransportistaFormComponent } from './modules/transportistas/registrar-transportistas/registrar-transportistas';
 import { RegistroViajesComponent } from './modules/trip/registro-viajes/registro-viajes';
+import { ReporteTransportistasComponent } from './pages/reportes/reportes-transportistas/reporte-transportistas';
 
 export const routes: Routes = [{
     path: 'login',
@@ -24,6 +25,7 @@ export const routes: Routes = [{
   {path: 'employee', component: EmployeeForm},
   {path: 'asignar-sucursales', component: AsignarSucursales},
   {path: 'registrar-transportista', component: TransportistaFormComponent},
-  {path: 'registrar-viajes', component: RegistroViajesComponent}
+  {path: 'registrar-viajes', component: RegistroViajesComponent},
+  {path: 'reportes/transportistas', component: ReporteTransportistasComponent}
 ]},
 {path: '**', redirectTo: 'login'}];

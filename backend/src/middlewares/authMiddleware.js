@@ -1,36 +1,36 @@
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
 
+function extractToken(req) {
+  const h = req.headers['authorization'] || req.headers['Authorization'];
+  if (!h) return null;
+  if (typeof h === 'string' && h.startsWith('Bearer ')) return h.slice(7);
+  return h; 
+}
+
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers['authorization'];
-  
-  if (!token) {
-    return res.status(403).json({ error: 'Token no proporcionado' });
-  }
+  const token = extractToken(req);
+  if (!token) return res.status(403).json({ error: 'Token no proporcionado' });
 
-  jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: 'Token inválido' });
-    }
-
-    req.userId = decoded.id;
-    req.userRole = decoded.role;
+  try {
+    const decoded = jwt.verify(token, config.JWT_SECRET);
+    req.user = decoded;
+    req.userId   = decoded.sub || decoded.id || decoded._id;
+    req.userRole = (decoded.role || '').toLowerCase();
+    req.userDept = (decoded.departamento || '').toLowerCase();
     next();
-  });
+  } catch {
+    return res.status(401).json({ error: 'Token inválido' });
+  }
 };
 
-exports.isAdmin = (req, res, next) => {
-  if (req.userRole !== 'admin') {
-    return res.status(403).json({ error: 'Requiere rol de administrador' });
-  }
-  next();
-};
+exports.requireTripPermission = (req, res, next) => {
+  const role = req.userRole || '';
+  const dept = req.userDept || '';
 
-exports.checkRole = (role) => {
-  return (req, res, next) => {
-    if (req.userRole !== role) {
-      return res.status(403).json({ error: 'Acceso denegado' });
-    }
-    next();
-  };
+  const isAdmin = role === 'admin';
+  const isGerenteTienda = role === 'gerente' && dept === 'tienda';
+
+  if (isAdmin || isGerenteTienda) return next();
+  return res.status(403).json({ error: 'Acceso denegado (solo Gerente de tienda o Admin)' });
 };

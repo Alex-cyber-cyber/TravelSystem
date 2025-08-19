@@ -78,6 +78,6 @@ obtenerEmployees(): Observable<any[]> {
 
   
   obtenerColaboradoresPorSucursal(sucursalId: string): Observable<any> {
-    return this.http.get(`/api/sucursales/${sucursalId}/colaboradores`);
+    return this.http.get<any[]>(`${this.apiUrl}/sucursales/${sucursalId}/colaboradores`);
   }
 }

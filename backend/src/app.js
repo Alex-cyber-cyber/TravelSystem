@@ -10,6 +10,7 @@ const EmployeeRoutes = require('./routes/personal/persoonal');
 const AsignarSucursales = require('./routes/AsignarSucursales/AsignarSucursales');
 const transportista = require('./routes/transportistas/transportistas');
 const viajes = require('./routes/viajes/viajes');
+const reportesTransportista = require('./routes/reportes/transportistas');
 
 const app = express();
 
@@ -35,9 +36,10 @@ app.use('/api/auth/register', registerRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/sucursales', sucursalRoutes);
 app.use('/api/employees', EmployeeRoutes);
-app.use('/api/AsignarSucursales', require('./routes/AsignarSucursales/AsignarSucursales'));
+app.use('/api/AsignarSucursales', AsignarSucursales);
 app.use('/api/transportistas', transportista);
 app.use('/api/viajes', viajes);
+app.use('/api/reportes/transportistas', reportesTransportista);
 
 
 app.use((req, res, next) => {

@@ -13,7 +13,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Buscar usuario por correo
         const user = await User.findOne({ correo: email });
         console.log('Usuario encontrado:', user);
         if (!user) {
@@ -23,7 +22,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Verificar contraseña
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json({
@@ -31,20 +29,25 @@ exports.login = async (req, res) => {
                 error: 'Contraseña incorrecta'
             });
         }
+            const payload = {
+                sub: user._id.toString(),
+                role: user.role,
+                departamento: user.departamento
+            };
+            const token = jwt.sign(payload, config.JWT_SECRET, { expiresIn: '8h' });
 
-        // Generar token JWT
-        const token = jwt.sign({ id: user._id }, config.JWT_SECRET, { expiresIn: '8h' });
-
-        res.status(200).json({
-            success: true,
-            token,
-        user: {
-            id: user._id,
-            employeeId: user.employeeId,
-            nombres: user.nombres,
-            correo: user.correo
-        }
-    });
+            res.status(200).json({
+                success: true,
+                token,
+                user: {
+                id: user._id,
+                employeeId: user.employeeId,
+                nombres: user.nombres,
+                correo: user.correo,
+                role: user.role,
+                departamento: user.departamento
+                }
+            });
     console.log('Usuario autenticado con éxito:', user);
     } catch (error) {
         console.error('Error en el controlador de login:', error);
